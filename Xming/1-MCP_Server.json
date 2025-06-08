@@ -1,0 +1,187 @@
+{
+    "name": "mcp-server",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "fafc78dd-85d5-4557-a4c4-1588dffd7fa6"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+            "typeVersion": 1,
+            "position": [
+                0,
+                0
+            ],
+            "id": "252a7eb9-10e9-4927-a28d-6201111797f4",
+            "name": "MCP Server Trigger",
+            "webhookId": "fafc78dd-85d5-4557-a4c4-1588dffd7fa6"
+        },
+        {
+            "parameters": {
+                "chatId": "6257255177",
+                "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+                "additionalFields": {}
+            },
+            "type": "n8n-nodes-base.telegramTool",
+            "typeVersion": 1.2,
+            "position": [
+                500,
+                220
+            ],
+            "id": "8b0973e8-7a77-402c-a0e7-835796f98412",
+            "name": "Telegram",
+            "webhookId": "ecf0f068-71d2-4c53-a34f-8f7e9d1c5ba0",
+            "credentials": {
+                "telegramApi": {
+                    "id": "VcqavjIsmVoTA8yl",
+                    "name": "Telegram account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+                "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+                "emailType": "text",
+                "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.gmailTool",
+            "typeVersion": 2.1,
+            "position": [
+                700,
+                220
+            ],
+            "id": "b807cbbe-4cfc-4c40-a3e0-fad30be383b1",
+            "name": "Gmail",
+            "webhookId": "5872737c-7f7d-4eb1-a65d-627dc1d8c658",
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "NNK5QFIzFJ3VfQBL",
+                    "name": "Gmail account new"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "owner": {
+                    "__rl": true,
+                    "value": "",
+                    "mode": "name"
+                },
+                "repository": {
+                    "__rl": true,
+                    "mode": "name",
+                    "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Repository_Name', ``, 'string') }}"
+                },
+                "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+                "body": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Body', ``, 'string') }}",
+                "labels": [],
+                "assignees": []
+            },
+            "type": "n8n-nodes-base.githubTool",
+            "typeVersion": 1.1,
+            "position": [
+                100,
+                220
+            ],
+            "id": "ad9c9db8-5d40-48ba-963e-d76a1176c922",
+            "name": "GitHub",
+            "webhookId": "89a82c0e-cfe7-4d72-9175-00a6d01440e5",
+            "credentials": {
+                "githubApi": {
+                    "id": "pW2aeYK3G7nrfUdv",
+                    "name": "GitHub account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "resource": "repository",
+                "operation": "get",
+                "owner": {
+                    "__rl": true,
+                    "value": "",
+                    "mode": "name"
+                },
+                "repository": {
+                    "__rl": true,
+                    "mode": "name",
+                    "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Repository_Name', ``, 'string') }}"
+                }
+            },
+            "type": "n8n-nodes-base.githubTool",
+            "typeVersion": 1.1,
+            "position": [
+                300,
+                220
+            ],
+            "id": "5f89da15-0aae-4d0a-80c4-ae3795833382",
+            "name": "GitHub1",
+            "webhookId": "11cd2ddf-60c7-4b65-a1c8-36cfd75abd19",
+            "credentials": {
+                "githubApi": {
+                    "id": "pW2aeYK3G7nrfUdv",
+                    "name": "GitHub account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "Telegram": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Gmail": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "GitHub": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "GitHub1": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": false,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "319a5930-5f7d-4092-9723-968c2693266a",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+    },
+    "id": "4OF4ceUwRWTFOxIn",
+    "tags": []
+}
