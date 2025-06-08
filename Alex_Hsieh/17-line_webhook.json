@@ -1,0 +1,281 @@
+{
+  "name": "🔥 省力工具！5分鐘搞定 n8n webhook + Line 個人助理 Message API 設定",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -780,
+        0
+      ],
+      "id": "5f10288b-a7d8-44ad-a4dd-953cffb5fc1c",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## Line Message API - 主動傳送訊息 - http request\n \n測試主動傳送訊息給 Line 個人助理 (官方帳號)\n- **line_uid**: 你的個人 line ID\n- **message**: 傳送訊息",
+        "height": 320,
+        "width": 880,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -940,
+        -160
+      ],
+      "id": "22442b8f-0cb6-4c8b-b54a-e14ce46c8f3d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6278f340-6287-4e89-b774-f6c584954d5b",
+              "name": "line_uid",
+              "type": "string",
+              "value": "U5070c97bf49ed9f19a3e353e64d0f2ac"
+            },
+            {
+              "id": "9b22e735-4ab1-4346-88b6-6674bdf1147a",
+              "name": "message",
+              "value": "n8n line 個人助理！",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "591e703a-a3c4-48c1-9c83-ffa31916b799",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -560,
+        0
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "line-webhook",
+        "options": {}
+      },
+      "id": "941290c2-3e1b-453c-bedb-c3ea44ae5781",
+      "name": "Webhook from Line Message",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        -760,
+        340
+      ],
+      "webhookId": "238cd352-5b09-48b8-8b4b-2f70998197db",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "b63773bb-f010-4018-8142-240c9aaa4570",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.body.events[0].type }}",
+              "rightValue": "message"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4162537e-0528-4984-aae6-14c72ec5de51",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -540,
+        340
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "content": "## Line Message API - 收到訊息後回應 - Webhook\n\n測試收到傳送訊息後，回應相同訊息給 Line 個人助理 (官方帳號)\n- **回應權杖（reply token）**：Line 用此判斷是否是合法的訊息傳送。\n- **事件類型**：需要判斷事件類型是否為 **message**，並只處理文字訊息",
+        "height": 360,
+        "width": 880,
+        "color": 3
+      },
+      "id": "936e0c81-5bec-4c72-b0a2-092e48ffda93",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Line 相關連結\n\n- Line api 文件 - https://developers.line.biz/en/docs/messaging-api/overview\n- Line 開發者頁面 - https://developers.line.biz/console/\n- Line 官方帳號 - https://manager.line.biz/\n- Line Endpoint - https://api.line.me/v2/bot/message/",
+        "height": 680,
+        "width": 380,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1320,
+        -160
+      ],
+      "id": "dee6a08c-b85b-4884-8bd9-5d6ffe992e49",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"to\": \"{{ $json.line_uid }}\",\n  \"messages\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{{ $json.message }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "d8da7407-50b8-41be-a322-1625efa16744",
+      "name": "Line : 推送訊息",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -340,
+        0
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "v799msNWDyFak0kO",
+          "name": "Header Auth - Line Alex"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/reply",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"replyToken\": \"{{ $('Webhook from Line Message').item.json.body.events[0].replyToken }}\",\n  \"messages\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"收到訊息 : {{ $('Webhook from Line Message').item.json.body.events[0].message.text }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "793e5ad2-4ff8-4eed-b067-be59fd099857",
+      "name": "Line : 回傳訊息",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -320,
+        340
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "v799msNWDyFak0kO",
+          "name": "Header Auth - Line Alex"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Line : 推送訊息",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook from Line Message": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Line : 回傳訊息",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Line : 回傳訊息": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Taipei",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 900,
+    "errorWorkflow": "0fS0IZwY5xyvbexo"
+  },
+  "versionId": "1324df97-7c03-4fb0-b4d9-308004ee79f3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+  },
+  "id": "uU7pdg5JvKoeeXZR",
+  "tags": [
+    {
+      "createdAt": "2025-01-21T07:13:36.575Z",
+      "updatedAt": "2025-01-21T07:13:36.575Z",
+      "id": "yM2YsERN8eAqo2ZC",
+      "name": "ai-agent"
+    },
+    {
+      "createdAt": "2025-02-20T10:56:36.149Z",
+      "updatedAt": "2025-02-20T10:56:36.149Z",
+      "id": "qc8YQ51rp9Uf0sOf",
+      "name": "prd"
+    },
+    {
+      "createdAt": "2025-03-17T08:20:06.861Z",
+      "updatedAt": "2025-03-17T08:20:06.861Z",
+      "id": "pvRmfUcHdkTEgrk9",
+      "name": "yt"
+    }
+  ]
+}

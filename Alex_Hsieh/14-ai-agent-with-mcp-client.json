@@ -1,0 +1,157 @@
+{
+  "name": "n8n MCP Client - AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## AI Agent + OpenAI 4o + MCP Client\n",
+        "height": 520,
+        "width": 990,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -80
+      ],
+      "id": "3ea7db29-a097-4e1b-b1e0-e37c4d7c303d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=## Context\n- Today is {{ $now.format('dd LLL yy') }}.\n- Current time: {{ $now.format('h:mm a') }} in Taiwan.\n- Language: 繁體中文\n- When asked, you are an AI Agent running as an n8n workflow.\n\n## Tool\n- CRM: 客戶名單，請使用 MCP Client - Search 請使用 airtable 的 Filter 語法\n- Calculate: 請使用 MCP Client\n\n## Output\nKeep responses short and clear, optimized for voice delivery. Don't hallucinate, if you don't know the answer, say you don't know. \nOutput text Language should be 繁體中文.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        60
+      ],
+      "id": "53e87ada-68e5-4e24-a6c2-b4bbf971e098",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        60
+      ],
+      "id": "41edd2f3-31dc-425a-945e-269bcbd16c52",
+      "name": "When chat message received",
+      "webhookId": "c436c0d8-d8b3-434b-8b98-59818a3efd78"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        280
+      ],
+      "id": "2a29f431-2645-4728-a600-0790ac4db10f",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        360,
+        280
+      ],
+      "id": "c1c45663-d9c6-4896-ae7b-92f2c7f402c0",
+      "name": "OpenAI 4o",
+      "credentials": {
+        "openAiApi": {
+          "id": "E7etfKieJU4UHoms",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://n8n-beta.zeabur.app/mcp/calculator/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        620,
+        280
+      ],
+      "id": "f48ce3f2-1fc7-4f03-b72f-80fe6849f3fe",
+      "name": "MCP Client"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI 4o": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fea324ca-22c4-4095-beae-e8446e8f29d9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5b5522015f8579a80867bd04784d46aecd597f3c7a08b45cdbc65ee34cc44c1e"
+  },
+  "id": "vcFqzefsU4rrfkCi",
+  "tags": []
+}

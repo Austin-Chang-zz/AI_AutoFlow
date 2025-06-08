@@ -1,0 +1,486 @@
+{
+  "name": "🔥 MKT 行銷省力工具！公司名單抓取神器",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "b1d12b67-2386-49bd-ab7b-693c950cf894",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -1060,
+        20
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://www.{{ $node[\"Loop Over Items\"].json[\"Domain\"] }}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          }
+        }
+      },
+      "id": "36c745c8-1f46-4837-99e6-ce954bf9ce4b",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -360,
+        180
+      ],
+      "typeVersion": 3,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "extractionValues": {
+          "values": [
+            {
+              "key": "body",
+              "cssSelector": "html"
+            },
+            {
+              "key": "footer",
+              "cssSelector": "html"
+            }
+          ]
+        },
+        "options": {
+          "trimValues": false
+        }
+      },
+      "id": "77792fd7-8ec2-41b1-86ee-828c5c4a2246",
+      "name": "HTML Extract",
+      "type": "n8n-nodes-base.htmlExtract",
+      "position": [
+        -180,
+        180
+      ],
+      "typeVersion": 1,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "e00f195c-c697-491b-9e16-5ca6064f9048",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        640,
+        60
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "if ($input.item.json.body){\n  $input.item.json.content = $input.item.json.body.replaceAll('/^\\s+|\\s+$/g', '').replace('/(\\r\\n|\\n|\\r)/gm', \"\").replace(/\\s+/g, ' ')\n\n  $input.item.json.contentShort = $input.item.json.content.slice(0, 10000)\n}\n\nif ($input.item.json.footer){\n  $input.item.json.content = $input.item.json.footer.replaceAll('/^\\s+|\\s+$/g', '').replace('/(\\r\\n|\\n|\\r)/gm', \"\").replace(/\\s+/g, ' ')\n\n  $input.item.json.contentShort += $input.item.json.content.slice(0, 10000)\n}\n\nreturn $input.item\n"
+      },
+      "id": "c303b397-1a5a-49be-bd30-ae34d463f368",
+      "name": "Clean Content",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -20,
+        180
+      ],
+      "executeOnce": false,
+      "typeVersion": 1,
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return $json.choices[0].message.content"
+      },
+      "id": "a1ab042b-f86b-4a63-bb7e-d322b55d04a2",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        440,
+        180
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "unit": "seconds"
+      },
+      "id": "064142e7-a52b-4e8a-87a3-a685a1d9deac",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        1180,
+        280
+      ],
+      "webhookId": "d44bc024-1c21-44e0-b2b4-5cff6fb9f402",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "batchSize": 10,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -620,
+        20
+      ],
+      "id": "54f692b6-c0f5-43dd-903e-507b2b3aa29a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1060,
+        240
+      ],
+      "id": "05623965-f72f-4339-8c2b-c82ebbe6cbfc",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=```\n作為一名行銷分析師，請分析目標網站的公司資訊，並根據其內容輸出以下 JSON 格式的分析結果。\n\n### **輸出要求**\n- **內容簡潔、準確，符合 JSON 格式標準**\n- **所有輸出皆為繁體中文**\n- **時間區間為 UTC+8**\n- **如網站資訊不完整，則適當填補或留空**\n\n---\n\n### **輸出格式**\n請確保輸出結果符合以下 JSON 格式：\n```json\n{\n  \"價值主張\": \"[公司名稱] 幫助 [目標受眾] [達成目標]，並提供 [額外好處]。\",\n  \"產業\": \"[請根據列表分類]\",\n  \"受眾\": \"[請從列表中選擇]\",\n  \"市場\": \"[B2B 或 B2C]\",\n  \"Email\": \"[公司聯絡信箱，若無則留空]\"\n}\n```\n\n---\n\n### **輸出內容與規則**\n#### **1. 價值主張（Value Proposition）**\n- 以 **輕鬆、簡潔** 的語氣撰寫，**不超過 25 個字**\n- 使用以下格式：\n  ```json\n  \"價值主張\": \"[公司名稱] 幫助 [目標受眾] [達成目標]，並提供 [額外好處]。\"\n  ```\n- 範例：\n  ```json\n  \"價值主張\": \"awoo.ai 幫助銷售團隊優化行銷流程，並透過 AI 驅動的解決方案提升消費者洞察力。\"\n  ```\n\n#### **2. 產業分類（Industry）**\n- 請從以下選項中選擇 **最適合的類別**：\n  ```\n  [農業, 藝術, 建築, 消費品, 教育, 娛樂, 金融, 其他, 醫療保健, 法律, 製造業, 媒體與通訊, 公共行政, 廣告, 房地產, 休閒與旅遊, 零售, 軟體, 運輸與物流, 健康與健身]\n  ```\n- **若無法明確判斷**，且 **介於「軟體」與「消費品」之間**，請優先選擇 **「消費品」**。\n\n#### **3. 目標受眾（Target Audience）**\n- 請從以下選項擇一，**並輸出繁體中文**\n  ```\n  [sales teams, marketing teams, HR teams, customer service teams, consumers, C-levels]\n  ```\n- 對應範例：\n  ```json\n  \"受眾\": \"銷售團隊\"\n  ```\n\n#### **4. 市場類型（Market）**\n- 判斷該企業是 **B2B** 或 **B2C**，並輸出相應類型。\n\n#### **5. 聯絡資訊（Email）**\n- **若網站有公開聯絡信箱，請輸出該信箱**\n- **若無，則留空字串 `\"\"`**\n\n---\n\n### **輸入來源**\n請分析以下網站內容：\n- **網址**：`{{ $node[\"Loop Over Items\"].json[\"Domain\"] }}`\n- **摘要**：`\"{{ $json[\"contentShort\"] }}\"`\n\n---\n\n### **回應格式**\n請嚴格依照以下格式回應：\n```json\n{\n  \"價值主張\": \"[公司名稱] 幫助 [目標受眾] [達成目標]，並提供 [額外好處]。\",\n  \"產業\": \"[請根據列表分類]\",\n  \"受眾\": \"[請從列表中選擇]\",\n  \"市場\": \"[B2B 或 B2C]\",\n  \"Email\": \"[公司聯絡信箱，若無則留空]\"\n}\n```\n請確保 JSON 格式正確，並符合上述規則。\n```\n\n---\n\n### **優化點**\n✅ **指令清晰，避免歧義**  \n✅ **強調 JSON 格式標準，減少格式錯誤機率**  \n✅ **優先使用繁體中文輸出，確保語言一致性**  \n✅ **規則具體明確，提高輸出精準度**  \n✅ **提供範例與輸出模板，提升可讀性與一致性**  \n\n這樣的 prompt 會讓 AI 產出更準確且符合要求的 JSON 結果 🚀",
+              "role": "system"
+            }
+          ]
+        },
+        "simplify": false,
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        140,
+        180
+      ],
+      "id": "cedb6751-0969-4ac0-acb5-22920ca81b78",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "vo1Kz0pllXw8z5Cv",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/11icC3DgHASe6EYChjR76fm9oNMGLWh-nFMZoaHcEUQA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11icC3DgHASe6EYChjR76fm9oNMGLWh-nFMZoaHcEUQA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "2a8d3291-e24b-460a-a6f2-ef37a34a8137",
+      "name": "讀取公司名單",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        -840,
+        20
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "h9nt1tzSKXo5I5yr",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/11icC3DgHASe6EYChjR76fm9oNMGLWh-nFMZoaHcEUQA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11icC3DgHASe6EYChjR76fm9oNMGLWh-nFMZoaHcEUQA/edit#gid=0"
+        },
+        "columnToMatchOn": "Domain",
+        "valueToMatchOn": "={{ $json.Domain }}",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "市場",
+              "fieldValue": "={{ $json[\"市場\"] }}"
+            },
+            {
+              "column": "產業",
+              "fieldValue": "={{ $json[\"產業\"] }}"
+            },
+            {
+              "column": "受眾",
+              "fieldValue": "={{ $json[\"受眾\"] }}"
+            },
+            {
+              "column": "價值主張",
+              "fieldValue": "={{ $json[\"價值主張\"] }}"
+            },
+            {
+              "column": "Email",
+              "fieldValue": "={{ $json.Email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fae61ba7-f40e-4e55-9064-761b1dc8206e",
+      "name": "公司網站名單",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        940,
+        60
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "h9nt1tzSKXo5I5yr",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Step 1 - 擷取試算表中的行銷網域，並對網站首頁做搜尋\n",
+        "height": 600,
+        "width": 710,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        -60
+      ],
+      "id": "b2acab85-2132-4b9e-83fb-1ec9df9734dc",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Step 2 - 爬取網站內容 HTML，並請 ChatGPT 來做基本的產業/受眾分析\n",
+        "height": 600,
+        "width": 1330
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -60
+      ],
+      "id": "01c84304-0f4e-44c0-9bee-b74ea65f19cd",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Step 3 - 合併資料輸出，並將資料存放到 Google 試算表",
+        "height": 600,
+        "width": 580,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -60
+      ],
+      "id": "ff1b4bf1-1a85-46a5-b4ea-77ec1261c1a9",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "讀取公司名單",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract": {
+      "main": [
+        [
+          {
+            "node": "Clean Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "公司網站名單",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Content": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "讀取公司名單",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "讀取公司名單": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "公司網站名單": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f31adb13-22c0-4f08-8e87-a8d986914930",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+  },
+  "id": "vTGb69vCNXtZe5pa",
+  "tags": [
+    {
+      "createdAt": "2025-02-08T08:50:12.969Z",
+      "updatedAt": "2025-02-08T08:50:12.969Z",
+      "id": "MsjujtEapjDx89km",
+      "name": "YT"
+    }
+  ]
+}

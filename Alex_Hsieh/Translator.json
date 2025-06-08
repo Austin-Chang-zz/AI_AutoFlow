@@ -1,0 +1,573 @@
+{
+  "name": "🔥 超級翻譯機，1次翻譯100個段落，英翻中、中翻英都可以一次搞定。",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1140,
+        20
+      ],
+      "id": "0c36962c-1b8e-403e-9ea5-c58b09d8fd97",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1gHHTyOY1sUaQyIa0aVhTjHUjkP8wCHM3CDvfxfvTmfA",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.Sheet }}",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "c23b9051-110d-4f9c-a487-5fa6ee59915e",
+      "name": "Fetch data",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        -760,
+        20
+      ],
+      "typeVersion": 4.5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "h9nt1tzSKXo5I5yr",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1gHHTyOY1sUaQyIa0aVhTjHUjkP8wCHM3CDvfxfvTmfA",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Edit Fields').item.json.Sheet }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "翻譯結果 (Chatgpt)": "={{ $json['翻譯結果 (Chatgpt)'] }}",
+            "row_number": "={{ $json.row_number }}",
+            "翻譯結果 (API)": "={{ $json['翻譯結果 (API)'] }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "原始語言",
+              "displayName": "原始語言",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "翻譯目標語言",
+              "displayName": "翻譯目標語言",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "翻譯內容",
+              "displayName": "翻譯內容",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "翻譯結果 (API)",
+              "displayName": "翻譯結果 (API)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "翻譯結果 (Chatgpt)",
+              "displayName": "翻譯結果 (Chatgpt)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "08fea2af-bb0a-4b0c-a5e4-32e609c54f97",
+      "name": "Update Content",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        720,
+        420
+      ],
+      "typeVersion": 4.5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "h9nt1tzSKXo5I5yr",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "text": "={{ $json[\"翻譯內容\"] }}",
+        "translateTo": "={{ $json[\"翻譯目標語言\"] }}"
+      },
+      "type": "n8n-nodes-base.googleTranslate",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        400
+      ],
+      "id": "148ebba8-919c-4e3d-ae27-e1242ecfe9df",
+      "name": "Google Translate",
+      "credentials": {
+        "googleApi": {
+          "id": "fVWRWImpeIhzcXbl",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3f6afb55-1fea-4601-86a2-c8f888cce6f9",
+              "leftValue": "={{ $('Edit Fields').item.json[\"Chatgpt or API\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        280
+      ],
+      "id": "f079e72c-c1f2-45d6-9d29-c8bd7b225cf9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "26b83ad3-e6b9-4ea0-a70f-4b8adec34132",
+              "name": "Chatgpt or API",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "f223a3a4-5387-4234-b8a8-5afc9f665fbd",
+              "name": "Sheet",
+              "value": "batch",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -960,
+        20
+      ],
+      "id": "c2f3a0a3-e31b-40a5-8726-f10cd81e8b71",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "## Google 翻譯\n\n- 支援語言代碼 https://support.google.com/googleplay/android-developer/table/4419860\n- 開啟 API 權限 :https://console.cloud.google.com/apis/library/translate.googleapis.com?inv=1&invt=AbrFjg&project=common-411213",
+        "height": 180,
+        "width": 640,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        720
+      ],
+      "id": "a2c5aa6b-a9d5-43a5-8b48-4d354e20f5f3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Step1 - 讀取要翻譯的內容，並決定翻譯的方法\n",
+        "height": 800,
+        "width": 1050,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1220,
+        -60
+      ],
+      "id": "374c628e-aa38-4153-b15b-d9b9ae3d613e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Step2 - 使用 Chatgpt 來翻譯對應語言的內容",
+        "height": 380,
+        "width": 790
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        -60
+      ],
+      "id": "07a37a3c-3d37-4697-9170-02ec8acc5939",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Step3 - 使用 google 翻譯 API 來翻譯對應語言的內容\n",
+        "height": 400,
+        "width": 780,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        320
+      ],
+      "id": "42fc2049-8203-4ea6-a11a-faf98b8ab114",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "batchSize": 10,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -540,
+        20
+      ],
+      "id": "2d030335-de27-40cb-bab7-552585969c8e",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=你是多國語言翻譯大師，請將下面的翻譯內容從指定語言轉換成目標語言\n\n1. 當無法辨認內容的指定語言時，請將內容預設翻譯成臺灣繁體中文\n2. 當沒有翻譯內容時，請再嘗試一次，最後回傳\"翻譯內容為空，請提供要翻譯的文句\"\n\n語言代碼轉換\n中文 (中華人民共和國)\tzh-CN\n中文 (台灣)\tzh-TW\n中文（香港）\tzh-HK\n丹麥文\tda\n俄文\tru\n保加利亞文\tbg\n克羅埃西亞文\thr\n冰島文\tis\n加泰隆尼亞文\tca\n匈牙利文\thu\n北印度文\thi\n南非荷蘭文\taf\n印尼文\tid/in\n土耳其文\ttr\n塞爾維亞文\tsr\n希伯來文\the\n希臘文\tel\n德文\tde\n愛沙尼亞文\tet\n拉脫維亞文\tlv\n挪威文\tno\n捷克文\tcs\n斯洛伐克文\tsk\n斯洛維尼亞文\tsl\n斯瓦希里文\tsw\n日文\tja\n法文 (加拿大)\tfr-CA\n法文 (法國)\tfr-FR\n波蘭文\tpl\n泰文\tth\n烏克蘭文\tuk\n瑞典文\tsv\n祖魯文\tzu\n立陶宛文\tlt\n羅馬尼亞文\tro\n義大利文\tit\n芬蘭文\tfi\n英文 (美國)\ten-US\n英文 (英國)\ten-GB\n荷蘭文\tnl\n菲律賓文\tfil\n葡萄牙文 (巴西)\tpt-BR\n葡萄牙文 (葡萄牙)\tpt-PT\n西班牙文 (拉丁美洲)\tes-419\n西班牙文 (西班牙)\tes-ES\n越南文\tvi\n阿姆哈拉文\tam\n韓文\tko\n馬來文\tms",
+              "role": "system"
+            },
+            {
+              "content": "=指定語言代碼：{{ $json['原始語言'] }}\n目標語言代碼：{{ $json['翻譯目標語言'] }}\n\nJSON 輸出\n{\n  \"翻譯結果 (Chatgpt)\": \"目標語言代碼\"\n}\n\n請根據語言代碼翻譯內容到目標語言：\n{{ $json['翻譯內容'] }}\n\n"
+            }
+          ]
+        },
+        "simplify": false,
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -100,
+        140
+      ],
+      "id": "100b02f9-71d6-435e-8e58-22ddf9dcbac0",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "vo1Kz0pllXw8z5Cv",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return $json.choices[0].message.content"
+      },
+      "id": "cf145eea-7237-49e7-b4ae-06a42a52c1b2",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        240,
+        140
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "26b83ad3-e6b9-4ea0-a70f-4b8adec34132",
+              "name": "翻譯結果 (API)",
+              "value": "={{ $json.translatedText }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        400
+      ],
+      "id": "1ca25206-ab51-44a8-8bc3-463ce89068a7",
+      "name": "Set Name"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "4ef961e0-22c6-4cbe-8db9-e7394d75ac82",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        700,
+        40
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "## 合併翻譯結果 (共用)",
+        "height": 640,
+        "width": 560,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -20
+      ],
+      "id": "22719068-38d6-4bff-9a46-b79d7992bdc5",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Content": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Translate": {
+      "main": [
+        [
+          {
+            "node": "Set Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Fetch data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Translate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Set Name": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Update Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "31ffacb5-5cc2-4659-a718-258eeb2894d4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+  },
+  "id": "a8aXq7psIbpiEP9R",
+  "tags": [
+    {
+      "createdAt": "2025-02-08T08:50:12.969Z",
+      "updatedAt": "2025-02-08T08:50:12.969Z",
+      "id": "MsjujtEapjDx89km",
+      "name": "YT"
+    }
+  ]
+}

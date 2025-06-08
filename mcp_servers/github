@@ -1,0 +1,45 @@
+{
+  "server": {
+    "name": "github.com/modelcontextprotocol/servers/tree/main/src/github",
+    "tool": [
+      {
+        "name": "create_or_update_file",
+        "description": "Create or update a single file in a repository",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "path": "string",
+          "content": "string",
+          "message": "string",
+          "branch": "string",
+          "sha": "string"
+        }
+      },
+      {
+        "name": "push_files",
+        "description": "Push multiple files in a single commit",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "branch": "string",
+          "files": [
+            {
+              "path": "string",
+              "content": "string"
+            }
+          ],
+          "message": "string"
+        }
+      },
+      {
+        "name": "search_repository",
+        "description": "Search for GitHub repository",
+        "parameters": {
+          "query": "string",
+          "page": "number",
+          "perPage": "number"
+        }
+      }
+    ]
+  }
+}

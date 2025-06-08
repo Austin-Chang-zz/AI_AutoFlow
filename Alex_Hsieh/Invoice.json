@@ -1,0 +1,505 @@
+{
+    "name": "🔥 省力工具！發票自動整理 AI 機器人",
+    "nodes": [
+        {
+            "parameters": {
+                "pollTimes": {
+                    "item": [
+                        {
+                            "mode": "everyHour"
+                        }
+                    ]
+                },
+                "simple": false,
+                "filters": {
+                    "labelIds": [
+                        "Label_3147350646686479453"
+                    ],
+                    "readStatus": "unread"
+                },
+                "options": {
+                    "downloadAttachments": true
+                }
+            },
+            "type": "n8n-nodes-base.gmailTrigger",
+            "typeVersion": 1.2,
+            "position": [
+                -800,
+                -500
+            ],
+            "id": "3a2b6fde-55f7-4d08-a514-00e7dd206afe",
+            "name": "Gmail Trigger",
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "xhKbueCrvtZ602Y6",
+                    "name": "Gmail account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "content": "## Step1 - 下載到google drive的資料夾，方便統一管理電子發票\n",
+                "height": 320,
+                "width": 930
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -360,
+                -760
+            ],
+            "id": "0eb8e334-ff49-4177-b972-abc98ae8c159",
+            "name": "Sticky Note"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "ed9ec9b7-43cb-4c27-a695-638b1403e782",
+                            "leftValue": "={{ $json.id }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "string",
+                                "operation": "exists",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -580,
+                -500
+            ],
+            "id": "dfe64505-f6c6-4483-8c7e-c2e0e09b1666",
+            "name": "If data output - 確認有資料"
+        },
+        {
+            "parameters": {
+                "mode": "runOnceForEachItem",
+                "jsCode": "// Define a function to correct MIME types\nfunction correctMimeType(attachment) {\n  if (!attachment) return null;\n\n  const extension = attachment.fileExtension.toLowerCase();\n  switch (extension) {\n    case 'pdf':\n      attachment.mimeType = 'application/pdf';\n      break;\n    case 'xlsx':\n      attachment.mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';\n      break;\n    case 'csv':\n      attachment.mimeType = 'text/csv';\n      break;\n    default:\n      attachment.mimeType = 'application/octet-stream'; // Default fallback\n  }\n\n  return attachment;\n}\n\n// Correct MIME types for attachment_0 and attachment_1\nif ($input.item.binary.attachment_0) {\n  $input.item.binary.attachment_0 = correctMimeType($input.item.binary.attachment_0);\n}\n\nif ($input.item.binary.attachment_1) {\n  $input.item.binary.attachment_1 = correctMimeType($input.item.binary.attachment_1);\n}\n\nif ($input.item.binary.attachment_2) {\n  $input.item.binary.attachment_2 = correctMimeType($input.item.binary.attachment_2);\n}\n\nif ($input.item.binary.attachment_3) {\n  $input.item.binary.attachment_3 = correctMimeType($input.item.binary.attachment_3);\n}\n// Return the modified item\nreturn $input.item;"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                -300,
+                -620
+            ],
+            "id": "c525ffda-235e-4709-bb3a-bcd8a0ba9925",
+            "name": "Change Mime Type"
+        },
+        {
+            "parameters": {
+                "operation": "addLabels",
+                "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+                "labelIds": [
+                    "Label_6364062473923210535"
+                ]
+            },
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                100,
+                -620
+            ],
+            "id": "87ab6bbd-b421-418f-a747-9a0f5c242cc4",
+            "name": "Gmail_Label",
+            "webhookId": "c586002a-5e99-4d72-8e43-c633b9cfe37c",
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "xhKbueCrvtZ602Y6",
+                    "name": "Gmail account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "markAsRead",
+                "messageId": "={{ $('Gmail Trigger').item.json.id }}"
+            },
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                280,
+                -620
+            ],
+            "id": "4ae0a9e6-29ce-4756-b578-c74226e00a0e",
+            "name": "Gmail_Read",
+            "webhookId": "c2a055d0-dae0-4c57-a514-9ef7d4cb9a3e",
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "xhKbueCrvtZ602Y6",
+                    "name": "Gmail account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "content": "## Step2 - 使用 Chatgpt 整理發票內容，並匯出資訊整理成發票清單\n",
+                "height": 280,
+                "width": 1240,
+                "color": 4
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -360,
+                -440
+            ],
+            "id": "616f9d25-1d32-47c5-958f-1196fe23ca4b",
+            "name": "Sticky Note1"
+        },
+        {
+            "parameters": {
+                "operation": "pdf",
+                "binaryPropertyName": "attachment_0",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.extractFromFile",
+            "typeVersion": 1,
+            "position": [
+                -80,
+                -340
+            ],
+            "id": "6414e25c-a33e-4252-a383-6f90542dddfd",
+            "name": "Extract from File"
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O-MINI"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=你現在是專業的電子發票整理助手，請協助我將輸入的任意發票資訊轉換為統一格式。\n請依照以下範本生成結果：\n\n發票資訊範本\n\t•\t發票類型: （自動從輸入中擷取）\n\t•\t發票編號: （自動從輸入中擷取）\n\t•\t發票日期: （自動擷取）\n\t•\t應付金額: （自動擷取）\n\t•\t帳戶號碼: （自動擷取）\n\t•\t備註\n\n\n輸入範例:\n\nInvoice Purpose: AWS Cloud Cost  \nInvoice Number: 2035799125  \nInvoice Date: 2025-01-02 \nAccount number: 737471613604   \nTotal Amount Due: $3.10  \n\n生成格式範例:\n \n{\n  \"invoice_purpose\": \"AWS Cloud Cost\"\n  \"invoice_number\": \"2035799125\",\n  \"invoice_date\": \"2025-01-02\",\n  \"amount_due\": \"$3.10\"\n  \"account_number\": \"737471613604\",\n  \"notes\": \"無\"\n}\n\n請依上述規則回應並請輸出格式一致且符合 JSON 標準！\n地區：台灣  \n時間：UTC8\n輸出語言：繁體中文\n發票日期：年-月-日 (2025-01-02)\n\n輸入文字：\n{{ $json.text }}",
+                            "role": "system"
+                        }
+                    ]
+                },
+                "simplify": false,
+                "jsonOutput": true,
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                100,
+                -340
+            ],
+            "id": "1824fde2-c5b3-47bf-9804-84ac39de9a5f",
+            "name": "Analysis Invoice",
+            "credentials": {
+                "openAiApi": {
+                    "id": "vo1Kz0pllXw8z5Cv",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "const text = $input.first().json.choices[0].message.content; // Get the parsed text from AI\n\nreturn {text}\n\n"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                460,
+                -340
+            ],
+            "id": "dea20ce3-94cc-44a1-b851-189ee5c52cc3",
+            "name": "Parse to table"
+        },
+        {
+            "parameters": {
+                "operation": "appendOrUpdate",
+                "documentId": {
+                    "__rl": true,
+                    "value": "https://docs.google.com/spreadsheets/d/1mMpdR61t-4TAdIpNeyfxdVH9lRnzXkC_WU1PG4m2FQk",
+                    "mode": "url"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "gid=0",
+                    "mode": "list",
+                    "cachedResultName": "發票清單",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mMpdR61t-4TAdIpNeyfxdVH9lRnzXkC_WU1PG4m2FQk/edit#gid=0"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "發票編號": "={{ $json.text.invoice_number }}",
+                        "發票日期": "={{ $json.text.invoice_date }}",
+                        "應付金額": "={{ $json.text.amount_due }}",
+                        "帳戶號碼": "={{ $json.text.account_number }}",
+                        "備註": "={{ $json.text.notes }}",
+                        "發票類型": "={{ $json.text.invoice_purpose }}"
+                    },
+                    "matchingColumns": [
+                        "發票編號"
+                    ],
+                    "schema": [
+                        {
+                            "id": "發票編號",
+                            "displayName": "發票編號",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "發票類型",
+                            "displayName": "發票類型",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "發票日期",
+                            "displayName": "發票日期",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "應付金額",
+                            "displayName": "應付金額",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "帳戶號碼",
+                            "displayName": "帳戶號碼",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "備註",
+                            "displayName": "備註",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                660,
+                -340
+            ],
+            "id": "ec7d309d-05d4-4893-b32d-ea214351d72a",
+            "name": "Invoice DB 電子發票管理",
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "h9nt1tzSKXo5I5yr",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "content": "## Step0 - Gmail收到電子發票後，觸發動作\n",
+                "height": 600,
+                "width": 490,
+                "color": 6
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -860,
+                -760
+            ],
+            "id": "b087111e-3f74-4dff-9c85-943ec9c7abf1",
+            "name": "Sticky Note2"
+        },
+        {
+            "parameters": {
+                "inputDataFieldName": "attachment_0",
+                "name": "=Invoice - {{ $json.subject }}.pdf",
+                "driveId": {
+                    "__rl": true,
+                    "value": "My Drive",
+                    "mode": "list",
+                    "cachedResultName": "My Drive",
+                    "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+                },
+                "folderId": {
+                    "__rl": true,
+                    "value": "https://drive.google.com/drive/folders/1xKOdcsAhn6rL1n6Zy6SYKJCvn3EkkLxe",
+                    "mode": "url"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+                -80,
+                -620
+            ],
+            "id": "cfe45450-f659-41dc-9c78-da8ff729a14e",
+            "name": "Upload2GD",
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "FOJsxE5vAvlfyH16",
+                    "name": "Google Drive account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "Gmail Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "If data output - 確認有資料",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If data output - 確認有資料": {
+            "main": [
+                [
+                    {
+                        "node": "Change Mime Type",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Gmail_Label": {
+            "main": [
+                [
+                    {
+                        "node": "Gmail_Read",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Change Mime Type": {
+            "main": [
+                [
+                    {
+                        "node": "Upload2GD",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Extract from File",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Gmail_Read": {
+            "main": [
+                []
+            ]
+        },
+        "Extract from File": {
+            "main": [
+                [
+                    {
+                        "node": "Analysis Invoice",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Analysis Invoice": {
+            "main": [
+                [
+                    {
+                        "node": "Parse to table",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse to table": {
+            "main": [
+                [
+                    {
+                        "node": "Invoice DB 電子發票管理",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Upload2GD": {
+            "main": [
+                [
+                    {
+                        "node": "Gmail_Label",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": true,
+    "settings": {
+        "executionOrder": "v1",
+        "timezone": "Asia/Taipei",
+        "callerPolicy": "workflowsFromSameOwner",
+        "executionTimeout": 300,
+        "errorWorkflow": "0fS0IZwY5xyvbexo"
+    },
+    "versionId": "3070c05f-f30c-4459-a975-9eeaaeb823e0",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+    },
+    "id": "R5INiaD2pgMmFeVK",
+    "tags": [
+        {
+            "createdAt": "2025-02-08T08:50:12.969Z",
+            "updatedAt": "2025-02-08T08:50:12.969Z",
+            "id": "MsjujtEapjDx89km",
+            "name": "YT"
+        }
+    ]
+}
