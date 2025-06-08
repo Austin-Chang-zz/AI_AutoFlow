@@ -20,18 +20,6 @@
       ],
       "disabled": false,
       "autoApprove": []
-    },
-    "firecrawl-mcp": {
-      "command": "npx",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "firecrawl-mcp"
-      ],
-      "env": {
-        "FIRECRAWL_API_KEY": "fc-aed59e84de434d8eaf559e7d0a02fb89"
-      }
     }
   }
 }
