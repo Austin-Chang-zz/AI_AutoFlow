@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Select Firecrawl Tool",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [300, 300],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "tool",
+              "value": "firecrawl_scrape"
+            },
+            {
+              "name": "url",
+              "value": "https://example.com"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "2",
+      "name": "Build Firecrawl Payload",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "parameters": {
+        "functionCode": "return items.map(item => {\n  return {\n    json: {\n      tool: item.json.tool,\n      arguments: {\n        url: item.json.url\n      }\n    }\n  };\n});"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Execute Firecrawl",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [700, 300],
+      "parameters": {
+        "url": "https://api.firecrawl.dev/tools/execute",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"tool\": $json.tool,\n  \"arguments\": $json.arguments\n}"
+      }
+    }
+  ],
+  "connections": {
+    "Select Firecrawl Tool": {
+      "main": [
+        [
+          {
+            "node": "Build Firecrawl Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Firecrawl Payload": {
+      "main": [
+        [
+          {
+            "node": "Execute Firecrawl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "version": 2
+}

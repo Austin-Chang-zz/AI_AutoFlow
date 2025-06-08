@@ -1,0 +1,644 @@
+{
+    "name": "🔥 省力工具！AI 音檔自動轉成逐字稿+ srt字幕檔案",
+    "nodes": [
+        {
+            "parameters": {
+                "content": "## Step1 - 將 google drive 的音檔，利用 Chatgpt 的 Whisper 功能整理出逐字稿\n",
+                "height": 320,
+                "width": 1050
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -600,
+                -1100
+            ],
+            "id": "3501e12a-fccf-4d59-8538-36736b31b155",
+            "name": "Sticky Note"
+        },
+        {
+            "parameters": {
+                "content": "## Step2 - 將逐字稿生成到 google 文件中，方便後續使用\n",
+                "height": 320,
+                "width": 500,
+                "color": 4
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                460,
+                -1100
+            ],
+            "id": "17650e11-045b-48d4-a98c-2b6413c29a7d",
+            "name": "Sticky Note1"
+        },
+        {
+            "parameters": {
+                "resource": "audio",
+                "operation": "transcribe",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                -140,
+                -1000
+            ],
+            "id": "4f6c5311-07f5-4482-9e02-b36f007d7a65",
+            "name": "OpenAI",
+            "credentials": {
+                "openAiApi": {
+                    "id": "vo1Kz0pllXw8z5Cv",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "pollTimes": {
+                    "item": [
+                        {
+                            "mode": "everyX",
+                            "value": 5,
+                            "unit": "minutes"
+                        }
+                    ]
+                },
+                "triggerOn": "specificFolder",
+                "folderToWatch": {
+                    "__rl": true,
+                    "value": "https://drive.google.com/drive/folders/1oha1rVA7IIxAqeuzCnFz9FJhiMqb44jP",
+                    "mode": "url"
+                },
+                "event": "fileCreated",
+                "options": {}
+            },
+            "id": "ebdc9055-7b57-4e29-ba6d-3ef83067ac14",
+            "name": "File Created",
+            "type": "n8n-nodes-base.googleDriveTrigger",
+            "typeVersion": 1,
+            "position": [
+                -960,
+                -1000
+            ],
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "FOJsxE5vAvlfyH16",
+                    "name": "Google Drive account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "pollTimes": {
+                    "item": [
+                        {
+                            "mode": "everyX",
+                            "value": 5,
+                            "unit": "minutes"
+                        }
+                    ]
+                },
+                "triggerOn": "specificFolder",
+                "folderToWatch": {
+                    "__rl": true,
+                    "value": "https://drive.google.com/drive/folders/1oha1rVA7IIxAqeuzCnFz9FJhiMqb44jP",
+                    "mode": "url"
+                },
+                "event": "fileUpdated",
+                "options": {}
+            },
+            "id": "922df614-e7d0-4f58-a424-2646342800f2",
+            "name": "File Updated",
+            "type": "n8n-nodes-base.googleDriveTrigger",
+            "typeVersion": 1,
+            "position": [
+                -960,
+                -780
+            ],
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "FOJsxE5vAvlfyH16",
+                    "name": "Google Drive account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+                            "name": "file_id",
+                            "value": "={{ $json.id }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+                            "name": "file_type",
+                            "value": "={{ $json.mimeType }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "624c4468-652d-48e0-8fb4-ee65eb1cb786",
+                            "name": "file_name",
+                            "value": "={{ $json.name }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "9d22530d-d418-473f-8383-aa4e81fbe524",
+            "name": "Set File ID",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -540,
+                -1000
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "download",
+                "fileId": {
+                    "__rl": true,
+                    "value": "={{ $('Set File ID').item.json.file_id }}",
+                    "mode": "id"
+                },
+                "options": {
+                    "googleFileConversion": {
+                        "conversion": {
+                            "docsToFormat": "text/plain"
+                        }
+                    }
+                }
+            },
+            "id": "48950975-d0f2-4d2a-a0eb-b2c512d18a68",
+            "name": "Download File",
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+                -340,
+                -1000
+            ],
+            "executeOnce": true,
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "FOJsxE5vAvlfyH16",
+                    "name": "Google Drive account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "folderId": "=1IjTP4SCJQsKmMimDZabJJYw5c3lmzu4Z",
+                "title": "={{ $('Set File ID').item.json.file_name }} - transcript - {{ $now }}"
+            },
+            "type": "n8n-nodes-base.googleDocs",
+            "typeVersion": 2,
+            "position": [
+                520,
+                -1000
+            ],
+            "id": "a6b2f1f2-7f89-4380-a54d-df2e2fb435c0",
+            "name": "Create Docs",
+            "credentials": {
+                "googleDocsOAuth2Api": {
+                    "id": "D6pC4MgIEKG0lxmK",
+                    "name": "Google Docs account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentURL": "={{ $json.id }}",
+                "actionsUi": {
+                    "actionFields": [
+                        {
+                            "action": "insert",
+                            "text": "={{ $('OpenAI Review').item.json.choices[0].message.content }}\n"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.googleDocs",
+            "typeVersion": 2,
+            "position": [
+                740,
+                -1000
+            ],
+            "id": "04a0d389-1b02-4d9c-9a64-f1de0bc211b3",
+            "name": "Update Docs",
+            "credentials": {
+                "googleDocsOAuth2Api": {
+                    "id": "D6pC4MgIEKG0lxmK",
+                    "name": "Google Docs account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O-MINI"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=您是繁體中文智能助理，您的任務是修正轉錄文本中的拼寫錯誤。",
+                            "role": "system"
+                        },
+                        {
+                            "content": "={{ $json.text }}"
+                        }
+                    ]
+                },
+                "simplify": false,
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                80,
+                -1000
+            ],
+            "id": "da10754e-fd4f-4129-a3f5-e28895c34483",
+            "name": "OpenAI Review",
+            "credentials": {
+                "openAiApi": {
+                    "id": "vo1Kz0pllXw8z5Cv",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "content": "## Step0 - 上傳音檔到 Google Drive，觸發動作產生文檔\n",
+                "height": 600,
+                "width": 470,
+                "color": 6
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -1080,
+                -1100
+            ],
+            "id": "4f7b1403-4d22-4cdd-bf75-04a0ef5f2b9a",
+            "name": "Sticky Note2"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "701a2fc8-85c4-4048-8087-090a6b67c01c",
+                            "leftValue": "={{ $json.fileExtension }}",
+                            "rightValue": "mp3",
+                            "operator": {
+                                "type": "string",
+                                "operation": "equals",
+                                "name": "filter.operator.equals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -760,
+                -900
+            ],
+            "id": "074a800f-621c-4858-96c4-c19f71b8388b",
+            "name": "If file is mp3"
+        },
+        {
+            "parameters": {
+                "content": "## Step3 - 生成 srt 字幕檔案\n",
+                "height": 280,
+                "width": 1340,
+                "color": 5
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -380,
+                -780
+            ],
+            "id": "35df9eef-d993-41bd-ad72-416cb54bf491",
+            "name": "Sticky Note3"
+        },
+        {
+            "parameters": {
+                "name": "={{ $('Set File ID').item.json.file_name }} - subtitle - {{ $now }}.srt",
+                "driveId": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "My Drive"
+                },
+                "folderId": {
+                    "__rl": true,
+                    "value": "https://drive.google.com/drive/folders/1umWnXA5RKRppAckJtjbJo9ojSw7EVF7o",
+                    "mode": "url"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+                320,
+                -700
+            ],
+            "id": "056ae74e-a472-4fdf-bf7d-c3ffdc6fcc17",
+            "name": "Google Drive",
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "FOJsxE5vAvlfyH16",
+                    "name": "Google Drive account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "move",
+                "fileId": {
+                    "__rl": true,
+                    "value": "={{ $json.file_id }}",
+                    "mode": "id"
+                },
+                "driveId": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "My Drive"
+                },
+                "folderId": {
+                    "__rl": true,
+                    "value": "https://drive.google.com/drive/folders/11TS5ildjEWUwSt7dQPZO5gqH1ptpjpsd",
+                    "mode": "url"
+                }
+            },
+            "type": "n8n-nodes-base.googleDrive",
+            "typeVersion": 3,
+            "position": [
+                -140,
+                -380
+            ],
+            "id": "b5c1f7d6-fb08-4853-8c8f-6ad041a897b1",
+            "name": "Done",
+            "credentials": {
+                "googleDriveOAuth2Api": {
+                    "id": "FOJsxE5vAvlfyH16",
+                    "name": "Google Drive account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "content": "## Step4 - 任務完成，將音檔放到完成作業資料夾\n",
+                "height": 280,
+                "width": 1340,
+                "color": 3
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -380,
+                -500
+            ],
+            "id": "11aac714-cad6-4256-a7c4-c929afbecb28",
+            "name": "Sticky Note4"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.openai.com/v1/audio/transcriptions",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Content-Type",
+                            "value": "multipart/form-data"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "contentType": "multipart-form-data",
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "model",
+                            "value": "whisper-1"
+                        },
+                        {
+                            "parameterType": "formBinaryData",
+                            "name": "file",
+                            "inputDataFieldName": "data"
+                        },
+                        {
+                            "name": "response_format",
+                            "value": "srt"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                -140,
+                -700
+            ],
+            "id": "1a02b406-42fa-4445-82b7-eed369fd56c1",
+            "name": "HTTP Request",
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "liRwZrehT9rkgcI4",
+                    "name": "Header Authorization Bearer - Open API"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "toText",
+                "sourceProperty": "data",
+                "binaryPropertyName": "=data",
+                "options": {
+                    "fileName": "=subtitle.srt"
+                }
+            },
+            "type": "n8n-nodes-base.convertToFile",
+            "typeVersion": 1.1,
+            "position": [
+                100,
+                -700
+            ],
+            "id": "da77eb57-dc0b-4cef-ab7f-e6fff3b79279",
+            "name": "Convert to Subtitle"
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "File Created": {
+            "main": [
+                [
+                    {
+                        "node": "If file is mp3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "File Updated": {
+            "main": [
+                [
+                    {
+                        "node": "If file is mp3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Set File ID": {
+            "main": [
+                [
+                    {
+                        "node": "Download File",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Download File": {
+            "main": [
+                [
+                    {
+                        "node": "OpenAI",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "HTTP Request",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Done",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Create Docs": {
+            "main": [
+                [
+                    {
+                        "node": "Update Docs",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI": {
+            "main": [
+                [
+                    {
+                        "node": "OpenAI Review",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Review": {
+            "main": [
+                [
+                    {
+                        "node": "Create Docs",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If file is mp3": {
+            "main": [
+                [
+                    {
+                        "node": "Set File ID",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "HTTP Request": {
+            "main": [
+                [
+                    {
+                        "node": "Convert to Subtitle",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Google Drive": {
+            "main": [
+                []
+            ]
+        },
+        "Convert to Subtitle": {
+            "main": [
+                [
+                    {
+                        "node": "Google Drive",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": false,
+    "settings": {
+        "executionOrder": "v1",
+        "timezone": "Asia/Taipei",
+        "callerPolicy": "workflowsFromSameOwner",
+        "executionTimeout": 300,
+        "errorWorkflow": "0fS0IZwY5xyvbexo"
+    },
+    "versionId": "c48a9ee3-f60f-41e9-aeef-58cae3f67120",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+    },
+    "id": "AZtqS6wLvomvpkwT",
+    "tags": [
+        {
+            "createdAt": "2025-02-08T08:50:12.969Z",
+            "updatedAt": "2025-02-08T08:50:12.969Z",
+            "id": "MsjujtEapjDx89km",
+            "name": "YT"
+        }
+    ]
+}

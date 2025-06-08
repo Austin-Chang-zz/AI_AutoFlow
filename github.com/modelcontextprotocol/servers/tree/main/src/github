@@ -1,0 +1,305 @@
+{
+  "server": {
+    "name": "github.com/modelcontextprotocol/servers/tree/main/src/github",
+    "tools": [
+      {
+        "name": "create_or_update_file",
+        "description": "Create or update a single file in a repository",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "path": "string",
+          "content": "string",
+          "message": "string",
+          "branch": "string",
+          "sha": "string"
+        }
+      },
+      {
+        "name": "push_files",
+        "description": "Push multiple files in a single commit",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "branch": "string",
+          "files": [
+            {
+              "path": "string",
+              "content": "string"
+            }
+          ],
+          "message": "string"
+        }
+      },
+      {
+        "name": "search_repository",
+        "description": "Search for GitHub repositories",
+        "parameters": {
+          "query": "string",
+          "page": "number",
+          "perPage": "number"
+        }
+      },
+      {
+        "name": "create_repository",
+        "description": "Create a new GitHub repository",
+        "parameters": {
+          "name": "string",
+          "description": "string",
+          "private": "boolean",
+          "autoInit": "boolean"
+        }
+      },
+      {
+        "name": "get_file_contents",
+        "description": "Get contents of a file or directory",
+        "parameters": {
+          "owner": "string",
+          "repo": "attempt_completion",
+          "path": "string",
+          "branch": "string"
+        }
+      },
+      {
+        "name": "create_issue",
+        "description": "Create a new issue",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "title": "string",
+          "body": "string",
+          "assignees": "string[]",
+          "labels": "string[]",
+          "milestone": "number"
+        }
+      },
+      {
+        "name": "create_pull_request",
+        "description": "Create a new pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "title": "string",
+          "body": "string",
+          "head": "string",
+          "base": "string",
+          "draft": "boolean",
+          "maintainer_can_modify": "boolean"
+        }
+      },
+      {
+        "name": "fork_repository",
+        "  "description": "Fork a repository",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "organization": "string"
+        }
+      },
+      {
+        "name": "create_branch",
+        "description": "Create a new branch",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "branch": "string",
+          "from_branch": "string"
+        }
+      },
+      {
+        "name": "list_issue",
+        "description": "List and filter repository issues",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "state": "string",
+          "label": "string[]",
+          "sort": "string",
+          "direction": "string",
+          "since": "string",
+          "page": "number",
+          "per_page": "number"
+        }
+      },
+      {
+        "name": "update_issue",
+        "description": "Update an existing issue",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "issue_number": "number",
+          "title": "string",
+          "body": "string",
+          "state": "string",
+          "label": "string[]",
+          "assignees": "string[]",
+          "milestone": "number"
+        }
+      },
+      {
+        "name": "add_issue_comment",
+        "description": "Add a comment to an issue",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "issue_number": "number",
+          "body": "string"
+        }
+      },
+      {
+        "name": "search_code",
+        "description": "Search for code across GitHub repositories",
+        "parameters": {
+          "q": "string",
+          "sort": "string",
+          "order": "string",
+          "per_page": "number",
+          "page": "number"
+        }
+      },
+      {
+        "name": "search_issue",
+        "description": "Search for issues and pull requests",
+        "parameters": {
+          "q": "attempt_completion",
+          "sort": "string",
+          "order": "string",
+          "per_page": "number",
+          "page": "number"
+        }
+      },
+      {
+        "name": "search_user",
+        "description": "Search for GitHub users",
+        "parameters": {
+          "attempt_completion": "string",
+          "sort": "string",
+          "order": "string",
+          "per_page": "number",
+          "page": "number"
+        }
+      },
+      {
+        "name": "list_commit",
+        "description": "Gets commits of a branch in a repository",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "page": "string",
+          "per_page": "string",
+          "sha": "string"
+        }
+      },
+      {
+        "name": "get_issue",
+        "description": "Gets the contents of an issue within a repository",
+        "parameters": {
+          "owner": "attempt_completion",
+          "repo": "string",
+          "issue_number": "number"
+        }
+      },
+      {
+        "name": "get_pull_request",
+        "description": "Get details of a specific pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number"
+        }
+      },
+      {
+        "name": "list_pull_request",
+        "description": "List and filter repository pull requests",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "state": "string",
+          "head": "string",
+          "base": "string",
+          "sort": "string",
+          "direction": "string",
+          "per_page": "number",
+          "page": "number"
+        }
+      },
+      {
+        "name": "create_pull_request_review",
+        "description": "Create a review on a pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number",
+          "body": "string",
+          "event": "string",
+          "commit_id": "string",
+          "comments": [
+            {
+              "path": "string",
+              "position": "number",
+              "body": "string"
+            }
+          ]
+        }
+      },
+      {
+        "name": "merge_pull_request",
+        "description": "Merge a pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number",
+          "commit_title": "string",
+          "commit_message": "string",
+          "merge_method": "string"
+        }
+      },
+      {
+        "name": "get_pull_request_file",
+        "description": "Get the list of files changed in a pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number"
+        }
+      },
+      {
+        "name": "get_pull_request_status",
+        "description": "Get the combined status of all status checks for a pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number"
+        }
+      },
+      {
+        "name": "update_pull_request_branch",
+        "description": "Update a pull request branch with the latest changes from the base branch",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number",
+          "expected_head_sha": "string"
+        }
+      },
+      {
+        "name": "get_pull_request_comment",
+        "description": "Get the review comments on a  pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number"
+        }
+      },
+      {
+        "name": "get_pull_request_review",
+        "description": "Get the reviews on a pull request",
+        "parameters": {
+          "owner": "string",
+          "repo": "string",
+          "pull_number": "number"
+        }
+      }
+    ]
+  }
+}

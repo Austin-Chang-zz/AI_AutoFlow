@@ -1,0 +1,233 @@
+{
+  "name": "🧠 5分鐘搞定n8n + Google OAuth",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        220
+      ],
+      "id": "fcf3cfa9-0197-4bff-be93-8478fe98f289",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## Step 1 - Google 設定 OAuth 2.0 權限\n\n[n8n 說明文件 - n8n Google: OAuth2 single service](https://docs.n8n.io/integrations/builtin/credentials/google/oauth-single-service/?utm_source=n8n_app&utm_medium=credential_settings&utm_campaign=create_new_credentials_modal)\n\n### 1. 創建 Google 專案 - `n8n OAuth`\n\n- 登入 [Google Cloud 控制台](https://console.cloud.google.com/)\n- 點擊頂部的專案下拉選單，選擇「新增專案」\n- 輸入專案名稱並選擇位置，然後點擊「建立」\n\n### 2. 啟用相關 API\n- 在左側導航欄選擇 `API 和服務` > `程式庫`\n- 搜尋並啟用以下 API：\n  - Gmail API  \n  - Google Sheets API  \n  - Google Docs API  \n  - Google Calendar API  \n  - Google Drive API\n\n### 3. 設定 OAuth 同意畫面\n- 在左側導航欄選擇 `API 和服務` > `OAuth 同意畫面`\n- 選擇使用者類型（內部或外部），點擊「建立」\n- 填寫應用程式名稱、使用者支援電子郵件等資訊\n- 在「授權網域」部分，加入你的 n8n 網域（例如 `n8n.cloud` 或自託管域名）\n- 點擊「儲存並繼續」\n\n### 4. 建立 OAuth 客戶端 ID\n- 返回 `API 和服務` > `憑證`\n- 點擊「建立憑證」>「OAuth 客戶端 ID」\n- 選擇應用程式類型為 `網頁應用程式`\n- 在「已授權的重新導向 URI」欄位中，輸入 n8n 的 OAuth 重定向 URI (https://{domain}/rest/oauth2-credential/callback)\n- 點擊「建立」，系統將生成：\n  - 客戶端 ID\n  - 客戶端密碼\n\n> ✅ 請妥善紀錄 **客戶端 ID** 和 **客戶端密碼**，後續設定 n8n 時會用到。\n",
+        "height": 860,
+        "width": 670,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1680,
+        -200
+      ],
+      "id": "a25b350d-e8e7-4533-b248-8493437d9c58",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Step 2 - 在 n8n 創建 5 個 Google OAuth 憑證\n\n### 🔧 設定 n8n 憑證流程：\n\n1. 登入你的 [n8n 平台](https://n8n.io/)\n2. 前往左側選單：`設定` > `憑證`（**Credentials**）\n3. 點擊右上角的 `新增憑證`（**Create New Credential**）\n4. 選擇要連接的 Google 服務，例如：`Gmail`\n5. 輸入在 Google Cloud 控制台中獲得的：\n   - **Client ID**\n   - **Client Secret**\n6. 點擊「**使用 Google 登入**」（**Connect using Google**）進行授權驗證\n\n### ✅ Tips：建議先預備好以下 5 個 Google API 權限，再逐一建立憑證：\n\n請先在 Google Cloud 中啟用以下 5 個 API，並使用相同的 OAuth Client ID / Secret，在 n8n 中為每一項服務建立獨立憑證：\n\n- **Google Drive**\n- **Google Sheets**\n- **Google Docs**\n- **Google Calendar**\n- **Gmail**\n\n> 💡 **建議流程：**  \n> 先在 Google Cloud 啟用好所有 5 個 API，並取得共用的 OAuth 憑證（Client ID / Secret），  \n> 然後在 n8n 中依序複製貼上，建立 5 組對應的憑證，最後再一次完成授權驗證。\n\n完成後，即可在 workflow 中選擇對應的憑證使用。\n\n",
+        "height": 720,
+        "width": 650
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        -220
+      ],
+      "id": "b4f5e06c-fb99-4cc2-846f-bc3d7ec1f387",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "folderId": "1jpXtp9QAGX96tzdNB2lPYQkkTiTNMazE",
+        "title": "Google OAuth"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        -740,
+        220
+      ],
+      "id": "a61e8a35-3ad0-498c-9b44-de84a349a046",
+      "name": "Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "D6pC4MgIEKG0lxmK",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Google OAuth",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -740,
+        -180
+      ],
+      "id": "eb4f8e53-72e9-4efa-a11c-8a8f96d93cd1",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "SI7ghWw9u2pzm0UC",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Google OAuth",
+        "options": {}
+      },
+      "id": "30737386-018b-47cf-b747-69a17accec37",
+      "name": "Google Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        -740,
+        20
+      ],
+      "typeVersion": 4.5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "08CT5ukfhYdFkwAm",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "qwedsazxc78@gmail.com",
+          "mode": "list",
+          "cachedResultName": "AI Automation"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -740,
+        420
+      ],
+      "id": "1210d687-aa50-414d-9ac6-4170b5c92503",
+      "name": "Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Xzqq6faOy8jGM4gY",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "Google OAuth"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -740,
+        620
+      ],
+      "id": "07432888-4518-4e97-8d4b-e8cacbbf50ce",
+      "name": "Gmail",
+      "webhookId": "883c23b4-800c-4934-8af1-6e18404e7e10",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xhKbueCrvtZ602Y6",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs": {
+      "main": [
+        []
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        []
+      ]
+    },
+    "Google Sheet": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e9f612e4-2341-499f-828d-6ada5b7ee79e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+  },
+  "id": "mahJ2a55q8so2Kpm",
+  "tags": [
+    {
+      "createdAt": "2025-02-08T08:50:12.969Z",
+      "updatedAt": "2025-02-08T08:50:12.969Z",
+      "id": "MsjujtEapjDx89km",
+      "name": "YT"
+    }
+  ]
+}

@@ -1,0 +1,468 @@
+{
+  "name": "Mcp",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "14a9adea-6134-426f-96d9-0fcbe258f861"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2160,
+        200
+      ],
+      "id": "dd9942b6-0dcd-4b10-9d64-3dec7f92c3c8",
+      "name": "MCP Server Trigger",
+      "webhookId": "14a9adea-6134-426f-96d9-0fcbe258f861"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        -2620,
+        460
+      ],
+      "id": "71991f70-197b-49f8-a89b-59d0bae90183",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "cityName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}",
+        "language": "zh_tw"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1,
+      "position": [
+        -2480,
+        460
+      ],
+      "id": "dd8a5347-a935-4875-9952-b2ea686fb347",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "6Sj6WPqHw8XPPFfs",
+          "name": "OpenWeatherMap account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "create",
+        "calendar": {
+          "__rl": true,
+          "value": "8eb510b81808b63bb5f59c047fbd9323e4d81a3bec174073f3d7adfe018a6e65@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "123"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -2220,
+        420
+      ],
+      "id": "55a587d0-dd58-414f-8067-5a7b0172e137",
+      "name": "Google Calendar create event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9ve1fcrSDDrAX6Rw",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "update",
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "8eb510b81808b63bb5f59c047fbd9323e4d81a3bec174073f3d7adfe018a6e65@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "123"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -2060,
+        420
+      ],
+      "id": "d3d550a9-3d75-484f-bd21-f9997fb7491b",
+      "name": "Google Calendar update event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9ve1fcrSDDrAX6Rw",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "delete",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "8eb510b81808b63bb5f59c047fbd9323e4d81a3bec174073f3d7adfe018a6e65@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "123"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -1900,
+        420
+      ],
+      "id": "b91f0481-a35d-42b2-9f35-91f918b5b456",
+      "name": "Google Calendar delete event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9ve1fcrSDDrAX6Rw",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "是一個網路搜尋工具",
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"query\": \"{word}\",\n    \"limit\": 5\n  }",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "word",
+              "description": "keyword"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        -2360,
+        460
+      ],
+      "id": "fbe02959-0ca9-428c-85fd-5ff961de2572",
+      "name": "search",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "aM1mrDVxDBTriB3s",
+          "name": "Scraping a URL with Firecrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "get",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "8eb510b81808b63bb5f59c047fbd9323e4d81a3bec174073f3d7adfe018a6e65@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "123"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -1740,
+        420
+      ],
+      "id": "aef150db-3251-4a60-9de1-849570df09c5",
+      "name": "Google Calendar get event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9ve1fcrSDDrAX6Rw",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1YZCgTVm4pVJViR0NorgTWxEKJFEfvhDxQxEzCfhmPmU",
+          "mode": "list",
+          "cachedResultName": "名片資料庫",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YZCgTVm4pVJViR0NorgTWxEKJFEfvhDxQxEzCfhmPmU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YZCgTVm4pVJViR0NorgTWxEKJFEfvhDxQxEzCfhmPmU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "公司名稱": "={{ $fromAI('company_name', '', 'string') }}",
+            "姓名": "={{ $fromAI('name', '', 'string') }}",
+            "地址": "={{ $fromAI('address', '', 'string') }}",
+            "公司類別": "={{ $fromAI('category', '', 'string') }}",
+            "個人電話": "={{ $fromAI('phone', '', 'string') }}",
+            "公司電話": "={{ $fromAI('company_phones', '', 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "公司名稱",
+              "displayName": "公司名稱",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "姓名",
+              "displayName": "姓名",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "個人電話",
+              "displayName": "個人電話",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "地址",
+              "displayName": "地址",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "公司電話",
+              "displayName": "公司電話",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "公司類別",
+              "displayName": "公司類別",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -1580,
+        420
+      ],
+      "id": "13457d28-f1b2-4f13-b89d-b0f90e7b230a",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C2K4w7xnPW0GM8yO",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1YZCgTVm4pVJViR0NorgTWxEKJFEfvhDxQxEzCfhmPmU",
+          "mode": "list",
+          "cachedResultName": "名片資料庫",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YZCgTVm4pVJViR0NorgTWxEKJFEfvhDxQxEzCfhmPmU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YZCgTVm4pVJViR0NorgTWxEKJFEfvhDxQxEzCfhmPmU/edit#gid=0"
+        },
+        "options": {
+          "outputFormatting": {
+            "values": {
+              "general": "UNFORMATTED_VALUE",
+              "date": "FORMATTED_STRING"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -1420,
+        420
+      ],
+      "id": "8eebb46b-8933-46a1-b91f-b35115a44a4e",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "C2K4w7xnPW0GM8yO",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar create event": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar update event": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar delete event": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar get event": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c1d3e068-cd94-4d0a-85db-5d427cf32f56",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b17ad060fbbb8ca8b93015f624347e198e358bdd8ebfadef89df935ad63a83e0"
+  },
+  "id": "CXpvVfeIA3hxzTRN",
+  "tags": []
+}

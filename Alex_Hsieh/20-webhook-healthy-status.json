@@ -1,0 +1,98 @@
+{
+  "name": "▶️ webhook healthy status",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "health",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "526d41d1-1772-4137-8227-6f1c056ca3cf",
+      "name": "Webhook",
+      "webhookId": "8fa045e6-fe30-47c1-9a69-fdd0fdc945bc"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"ok\",\n  \"頻道敘述\": \"簡化 AI 使用！輸出省力工具！\",\n  \"Yutuber 頻道\": \"https://www.youtube.com/@ai-brain-alex\"\n}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "1c3d1151-074c-4536-8e46-6c579f7e1967",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "## Webhook - 網站健康狀況 Healthy",
+        "height": 340,
+        "width": 610
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -120
+      ],
+      "id": "084a3f49-2457-41bb-b990-4227038c6ca5",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2536b97a-d30d-478d-916b-1d1f64f21a60",
+  "meta": {
+    "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+  },
+  "id": "xxIKJ6OVvekulOXw",
+  "tags": [
+    {
+      "createdAt": "2025-03-17T08:20:06.861Z",
+      "updatedAt": "2025-03-17T08:20:06.861Z",
+      "id": "pvRmfUcHdkTEgrk9",
+      "name": "yt"
+    },
+    {
+      "createdAt": "2025-04-23T00:34:42.978Z",
+      "updatedAt": "2025-04-23T00:34:42.978Z",
+      "id": "UvB2d0gB1EZryRn0",
+      "name": "webhook"
+    }
+  ]
+}

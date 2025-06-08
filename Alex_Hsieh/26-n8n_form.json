@@ -1,0 +1,649 @@
+{
+  "name": "行銷自動化：Leads Magnet Mail List - n8n form",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "🧠 一起打造 AI 大腦 - 解除訂閱",
+        "formDescription": "噢不，請你再想想！還有非常多資源提供",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "ai-brain-alex@gmail.com"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "送出",
+          "path": "unsubscribe",
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "已經成功解除訂閱了！"
+            }
+          },
+          "ignoreBots": true,
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 14px;\n\t--font-size-label: 16px;\n\t--font-size-test-notice: 14px;\n\t--font-size-input: 16px;\n\t--font-size-header: 26px;\n\t--font-size-paragraph: 16px;\n\t--font-size-link: 14px;\n\t--font-size-error: 14px;\n\t--font-size-html-h1: 32px;\n\t--font-size-html-h2: 24px;\n\t--font-size-html-h3: 18px;\n\t--font-size-html-h4: 16px;\n\t--font-size-html-h5: 14px;\n\t--font-size-html-h6: 12px;\n\t--font-size-subheader: 16px;\n\n\t/* Colors */\n\t--color-background: #f0f4f8;\n\t--color-test-notice-text: #ff9f43;\n\t--color-test-notice-bg: #fff5e7;\n\t--color-test-notice-border: #ffd89e;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #ced4da;\n\t--color-card-shadow: rgba(60, 64, 67, 0.15);\n\t--color-link: #007bff;\n\t--color-header: #333;\n\t--color-label: #555555;\n\t--color-input-border: #ced4da;\n\t--color-input-text: #495057;\n\t--color-focus-border: #007bff;\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #dc3545;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #6c757d;\n\t--color-html-text: #495057;\n\t--color-html-link: #007bff;\n\t--color-header-subtext: #6c757d;\n\n\t/* Border Radii */\n\t--border-radius-card: 12px;\n\t--border-radius-input: 8px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 12px;\n\n\t/* Spacing */\n\t--padding-container-top: 32px;\n\t--padding-card: 32px;\n\t--padding-test-notice-vertical: 16px;\n\t--padding-test-notice-horizontal: 32px;\n\t--margin-bottom-card: 24px;\n\t--padding-form-input: 16px;\n\t--card-padding: 32px;\n\t--card-margin-bottom: 24px;\n\n\t/* Dimensions */\n\t--container-width: 480px;\n\t--submit-btn-height: 52px;\n\t--checkbox-size: 20px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 6px 20px rgba(0, 0, 0, 0.1);\n\t--opacity-placeholder: 0.7;\n}\n"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        80
+      ],
+      "id": "d14680c9-d399-4560-b87e-0e5ed2982d0f",
+      "name": "解除訂閱",
+      "webhookId": "217d28dd-0f65-4b80-8c34-3cb58066c0ea"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1wbyQ_ijB13aqRWtqWtAI0bez6_gjYEGblNhIaVprbwY/",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "名單",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wbyQ_ijB13aqRWtqWtAI0bez6_gjYEGblNhIaVprbwY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $json.Email }}",
+            "名字": "={{ $json['名字'] }}",
+            "submittedAt": "={{ $json.submittedAt }}",
+            "formMode": "={{ $json.formMode }}",
+            "姓氏": "={{ $json['姓氏'] }}",
+            "啟動": "true",
+            "最想要學習的部分": "={{ $json['最想要學習的部分'] }} "
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "姓氏",
+              "displayName": "姓氏",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "名字",
+              "displayName": "名字",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "啟動",
+              "displayName": "啟動",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "UpdateAt",
+              "displayName": "UpdateAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "formMode",
+              "displayName": "formMode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "最想要學習的部分",
+              "displayName": "最想要學習的部分",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "useAppend": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        -180
+      ],
+      "id": "8cf75dfb-f3c3-4ccb-a2b6-6812a3450ee4",
+      "name": "Add New",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "h9nt1tzSKXo5I5yr",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1wbyQ_ijB13aqRWtqWtAI0bez6_gjYEGblNhIaVprbwY/",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "名單",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wbyQ_ijB13aqRWtqWtAI0bez6_gjYEGblNhIaVprbwY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $json.Email }}",
+            "啟動": "false",
+            "UpdateAt": "={{ $now }} "
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "姓氏",
+              "displayName": "姓氏",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "名字",
+              "displayName": "名字",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "啟動",
+              "displayName": "啟動",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "UpdateAt",
+              "displayName": "UpdateAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "formMode",
+              "displayName": "formMode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "最想要學習的部分",
+              "displayName": "最想要學習的部分",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        80
+      ],
+      "id": "1eadc1d9-8d22-4fa1-9bd7-859ff8ef077a",
+      "name": "Inactivate Old",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "h9nt1tzSKXo5I5yr",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"to\": \"{{ $json.line_uid }}\",\n  \"messages\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{{ $json.message }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "587a5f4c-8ad8-4582-b290-98f39d8d8f08",
+      "name": "Line : Push Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        660,
+        -180
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "v799msNWDyFak0kO",
+          "name": "Header Auth - Line Alex"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6278f340-6287-4e89-b774-f6c584954d5b",
+              "name": "line_uid",
+              "type": "string",
+              "value": "Uee67d82636f96a3c2d3d42a13f33aef2"
+            },
+            {
+              "id": "9b22e735-4ab1-4346-88b6-6674bdf1147a",
+              "name": "message",
+              "value": "=[訂閱名單] 新增 {{ $json['姓氏'] }} {{ $json['名字'] }} - {{ $json.Email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "440394dc-24d3-4c5a-a723-9a5e83d44c1f",
+      "name": "新增訂閱名單",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        440,
+        -180
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6278f340-6287-4e89-b774-f6c584954d5b",
+              "name": "line_uid",
+              "type": "string",
+              "value": "Uee67d82636f96a3c2d3d42a13f33aef2"
+            },
+            {
+              "id": "9b22e735-4ab1-4346-88b6-6674bdf1147a",
+              "name": "message",
+              "value": "=[訂閱名單] 解除 {{ $json['姓氏'] }} {{ $json['名字'] }} - {{ $json.Email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "42e13653-9977-4b86-ad43-f1f0117f5d4e",
+      "name": "解除訂閱名單",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        440,
+        80
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"to\": \"{{ $json.line_uid }}\",\n  \"messages\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{{ $json.message }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "5302bf02-3fe9-4dfd-99f5-4b73057ce223",
+      "name": "Line : Push Message - 解除訂閱名單",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        660,
+        80
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "v799msNWDyFak0kO",
+          "name": "Header Auth - Line Alex"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Add New').item.json.Email }}",
+        "subject": "=[Alex Hsieh 相談室 | AI Brain] 加入成功！ {{ $('Add New').item.json[\"名字\"] }} 我已經把你加入我們的名單摟！",
+        "message": "=<!DOCTYPE html>\n<html lang=\"zh-Hant\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>歡迎加入 Alex Hsieh 相談室 | AI Brain</title>\n  <style>\n    body {\n      font-family: 'Helvetica Neue', Arial, sans-serif;\n      background-color: #f9f9f9;\n      color: #333;\n      padding: 20px;\n      line-height: 1.6;\n    }\n    .container {\n      max-width: 600px;\n      margin: auto;\n      background: #ffffff;\n      padding: 30px;\n      border-radius: 8px;\n      box-shadow: 0 0 10px rgba(0,0,0,0.05);\n    }\n    h1 {\n      color: #1a73e8;\n    }\n    a {\n      color: #1a73e8;\n      text-decoration: none;\n    }\n    .cta-button {\n      display: inline-block;\n      margin-top: 10px;\n      padding: 10px 20px;\n      background-color: #1a73e8;\n      color: #ffffff !important;\n      text-decoration: none;\n      border-radius: 5px;\n    }\n    .footer {\n      margin-top: 30px;\n      font-size: 12px;\n      color: #999;\n      text-align: center;\n    }\n    .unsubscribe {\n      margin-top: 15px;\n      font-size: 12px;\n      color: #999;\n    }\n    .unsubscribe a {\n      color: #999;\n      text-decoration: underline;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h1>Hi, {{ $('Add New').item.json['名字'] }} 👋</h1>\n    <p>歡迎你加入 <strong>Alex Hsieh 相談室 | AI Brain</strong>！</p>\n\n    <p>我們已經將 <strong>n8n 零基礎教學教材</strong> 放在附件中（約 8MB），請確認不會被信箱擋掉喔！</p>\n\n    <p>接下來，<strong>YT 新片上架、n8n 學習資源與電子報</strong>，都會透過這個信箱寄送給你！</p>\n\n    <p>\n      👉 <a href=\"https://www.youtube.com/channel/UCDMJaaMu3nGNc7bNKMAtS7Q\" class=\"cta-button\">訂閱我們的 YT 頻道</a><br>\n      👉 <a href=\"https://www.skool.com/ai-brain-alex/about?ref=5dde9b20e8e7432aa9a01df6e89685f4\" class=\"cta-button\">加入我們的 Skool 社群</a>\n    </p>\n\n    <div class=\"footer\">\n      若你有任何問題，也歡迎用這個電子信箱與我們聯絡。\n      <div class=\"unsubscribe\">\n        如果你不想再收到這類型的電子郵件，<a href=\"https://n8n-alex.zeabur.app/form/unsubscribe\" target=\"_blank\">點我解除訂閱</a>。\n      </div>\n    </div>\n  </div>\n</body>\n</html>\n",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          },
+          "senderName": "Alex Hsieh 相談室 | AI Brain"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        -380
+      ],
+      "id": "91677d66-67fd-44a3-bd70-4cf24527586f",
+      "name": "Gmail",
+      "webhookId": "ca7a61c8-9443-4457-aeb3-2bc418e7da20",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "fSU6k20zmD8zlujz",
+          "name": "Gmail account - cloudf1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://drive.google.com/file/d/1at41BllYpqh4sQQhS5SjNM1w9OzE1Eb2/view?usp=drive_link",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        660,
+        -380
+      ],
+      "id": "4f78cc45-2ed1-4097-9f03-53cbb7dd5aef",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "FOJsxE5vAvlfyH16",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "🧠 一起打造 AI 大腦",
+        "formDescription": "加入 Alex Hsieh 相談室 | AI Brain\nYT新片上架、n8n與各種學習資源，也會透過mail寄送\n\n",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "姓氏",
+              "placeholder": "王",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "名字",
+              "placeholder": "小明",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "ai-brain-alex@gmail.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "最想要學習的部分",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "AI 自動化與智能代理"
+                  },
+                  {
+                    "option": "行銷與社群媒體管理"
+                  },
+                  {
+                    "option": "CRM 整合與銷售流程自動化"
+                  },
+                  {
+                    "option": "IT 運維與 DevOps 自動化"
+                  },
+                  {
+                    "option": "資料同步與報表自動化"
+                  },
+                  {
+                    "option": "工作或企業內部使用，提升生產力"
+                  }
+                ]
+              },
+              "multiselect": true,
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "送出",
+          "path": "subscribe",
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "已經成功訂閱了！"
+            }
+          },
+          "ignoreBots": false,
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 14px;\n\t--font-size-label: 16px;\n\t--font-size-test-notice: 14px;\n\t--font-size-input: 16px;\n\t--font-size-header: 26px;\n\t--font-size-paragraph: 16px;\n\t--font-size-link: 14px;\n\t--font-size-error: 14px;\n\t--font-size-html-h1: 32px;\n\t--font-size-html-h2: 24px;\n\t--font-size-html-h3: 18px;\n\t--font-size-html-h4: 16px;\n\t--font-size-html-h5: 14px;\n\t--font-size-html-h6: 12px;\n\t--font-size-subheader: 16px;\n\n\t/* Colors */\n\t--color-background: #f0f4f8;\n\t--color-test-notice-text: #ff9f43;\n\t--color-test-notice-bg: #fff5e7;\n\t--color-test-notice-border: #ffd89e;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #ced4da;\n\t--color-card-shadow: rgba(60, 64, 67, 0.15);\n\t--color-link: #007bff;\n\t--color-header: #333;\n\t--color-label: #555555;\n\t--color-input-border: #ced4da;\n\t--color-input-text: #495057;\n\t--color-focus-border: #007bff;\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #dc3545;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #6c757d;\n\t--color-html-text: #495057;\n\t--color-html-link: #007bff;\n\t--color-header-subtext: #6c757d;\n\n\t/* Border Radii */\n\t--border-radius-card: 12px;\n\t--border-radius-input: 8px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 12px;\n\n\t/* Spacing */\n\t--padding-container-top: 32px;\n\t--padding-card: 32px;\n\t--padding-test-notice-vertical: 16px;\n\t--padding-test-notice-horizontal: 32px;\n\t--margin-bottom-card: 24px;\n\t--padding-form-input: 16px;\n\t--card-padding: 32px;\n\t--card-margin-bottom: 24px;\n\n\t/* Dimensions */\n\t--container-width: 480px;\n\t--submit-btn-height: 52px;\n\t--checkbox-size: 20px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 6px 20px rgba(0, 0, 0, 0.1);\n\t--opacity-placeholder: 0.7;\n}\n"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        -180
+      ],
+      "id": "d664682c-5144-4b5a-8a61-83c13de82ab0",
+      "name": "訂閱名單",
+      "webhookId": "41797480-712c-4023-b9a3-c39f272be8a6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Add New": {
+      "main": [
+        [
+          {
+            "node": "新增訂閱名單",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "解除訂閱": {
+      "main": [
+        [
+          {
+            "node": "Inactivate Old",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inactivate Old": {
+      "main": [
+        [
+          {
+            "node": "解除訂閱名單",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "新增訂閱名單": {
+      "main": [
+        [
+          {
+            "node": "Line : Push Message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "解除訂閱名單": {
+      "main": [
+        [
+          {
+            "node": "Line : Push Message - 解除訂閱名單",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "訂閱名單": {
+      "main": [
+        [
+          {
+            "node": "Add New",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c93d03dd-10e3-4a40-9e95-2f7db4edfe4c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+  },
+  "id": "c7hyGghnys2QHXXh",
+  "tags": []
+}

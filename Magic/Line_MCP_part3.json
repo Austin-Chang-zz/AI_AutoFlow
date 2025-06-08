@@ -1,0 +1,549 @@
+{
+  "name": "Line+MCP",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.line.me/v2/bot/message/reply",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"replyToken\": \"{{ $('Webhook').item.json.body.events[0].replyToken }}\",\n  \"messages\": [\n    {\n      \"type\": \"text\",\n      \"text\": {{ JSON.stringify($node[\"Code1\"].json[\"cleanContent\"]) }}\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "b7bd8e23-a438-413c-8b62-503d4db50c18",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        100
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "q1QAdZeGneiKPHrl",
+          "name": "lineapi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 獲取 inputData 是一段文本，直接清理\nconst inputData = $input.first().json.output;\n\n// 清理文本函數\nconst cleanText = (text) => {\n  if (!text) return \"\";\n  // 移除或轉義特殊字符和格式標記\n  return text\n    .replace(/[_`\\[\\](){}!]/g, ' ') // 用空格替換而不是直接移除\n    .substring(0, 3000); // 限制長度\n};\n\nconst cleanedContent = cleanText(inputData);\n\n// 返回處理後的數據\nreturn {\n  json: {\n    originalContent: inputData,\n    cleanContent: cleanedContent\n  }\n};"
+      },
+      "id": "403a3efc-d3ee-4d85-9a6f-b8f39bd89053",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        920,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "80e2bfee72f045945947f398633c500a",
+        "options": {}
+      },
+      "id": "b1aaacaa-cd3c-4508-98ca-aa31ab9d97ef",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -780,
+        -20
+      ],
+      "webhookId": "9e5aa60e-3406-41dc-a256-41c0a7342e17"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.events[0].message.text }}",
+        "options": {
+          "systemMessage": "你是個人AI助手，可使用各種MCP工具\n\n\n可使用的工具有以下這些\nCalculator\nOpenWeatherMap\nsearch\nGoogle Calendar create event\nGoogle Calendar update event\nGoogle Calendar delete event\nGoogle Calendar get event\nGoogle Sheets\nGoogle Sheets1"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        300,
+        -100
+      ],
+      "id": "84b261ae-fd8a-46ea-928d-97887bf93da5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.events[0].message.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        120
+      ],
+      "id": "453b225f-f95d-4fd3-8bc7-97886bffc971",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        220,
+        120
+      ],
+      "id": "7be7a51b-589a-4114-ac4b-198ef9f22f42",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "G4OvzHgJ16pF2Ecg",
+          "name": "OpenRouter account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6dfd7af4-063d-4eb1-9be2-ed640cf6099a",
+              "leftValue": "={{ $json.body.events[0].message.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -600,
+        -20
+      ],
+      "id": "ca1ce633-cb17-4a43-a67d-afaeb8589314",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "=https://api-data.line.me/v2/bot/message/{{ $json.body.events[0].message.id }}/content",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer W/+jSr+d3QyqHTwPf3nkSlYchsatjat2wCJB7Z9Ok4v04QnA2aN0nJ6bAefb+fOsQSmQ/HEcw5C/wVFv1sfv+GYwnbl4c98S8yzKaZXOZxEkAHiskzMJgdDNJaLw2qbxjdjXN52irm2uZGZ/EHG7ewdB04t89/1O/w1cDnyilFU="
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -480,
+        380
+      ],
+      "id": "2efaa6b0-c4d1-4493-8d8d-d9c9a0884f36",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=請描述圖諞中的文字",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "你是一位名片專家，負責解釋圖片資訊"
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "messageType": "imageBinary"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        -260,
+        380
+      ],
+      "id": "6a7f2b52-ee2e-47f1-8ea0-a49186338d5f",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        600
+      ],
+      "id": "9432e398-6e7d-4815-967f-2dc0216951ca",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nlPh2Ux3iZHZLw9M",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}請將名片資訊整理分類為公司名稱、姓名、個人電話、地址、公司電話、公司類別",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "請將名片資訊整理分類為公司名稱、姓名、個人電話、地址、公司電話、公司類別\n輸出的\"phone\": \"\",    ← 若沒有個人電話，也請留公司電話"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        100,
+        380
+      ],
+      "id": "94fb7217-8e0e-461b-b693-5695f6fdfd8f",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"\",\n  \"name\": \"\",\n  \"phone\": \"\", \n  \"address\": \"\",\n  \"company_phones\": \"\",\n  \"fax\": \"\",\n  \"category\": \"\"\n}\n\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        280,
+        580
+      ],
+      "id": "08d0ec27-a893-46ad-a865-b0f21f46bfef",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output.company_name }}、{{ $json.output.name }}、{{ $json.output.phone }}、{{ $json.output.address }}、{{ $json.output.company_phones }}、{{ $json.output.category }}將資料寫入Google Sheets",
+        "options": {
+          "systemMessage": "你是個人AI助手，可參考使用各種MCP工具\n\n\n可使用的工具有以下這些\nCalculator\nOpenWeatherMap\nsearch\nGoogle Calendar create event\nGoogle Calendar update event\nGoogle Calendar delete event\nGoogle Calendar get event\nGoogle Sheets\nGoogle Sheets1"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        460,
+        380
+      ],
+      "id": "fe589b07-542d-4d9d-9e14-663c3fb06a4e",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        460,
+        580
+      ],
+      "id": "3ad9e3f0-6be7-41af-8001-e742b3f2fc48",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nlPh2Ux3iZHZLw9M",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://n8n.tigerai.cloud/mcp/14a9adea-6134-426f-96d9-0fcbe258f861/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        660,
+        600
+      ],
+      "id": "3dc8a4c4-655a-4c40-99a4-96bcf51819c8",
+      "name": "MCP Client1"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://n8n.tigerai.cloud/mcp/14a9adea-6134-426f-96d9-0fcbe258f861/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        560,
+        120
+      ],
+      "id": "c1767a8b-6993-4682-8c93-5d6536159f05",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17",
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        60,
+        580
+      ],
+      "id": "902523d6-4508-4847-bb5b-10247473cf62",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nlPh2Ux3iZHZLw9M",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0467a25e-b8bf-4573-8c54-651f3e989510",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b17ad060fbbb8ca8b93015f624347e198e358bdd8ebfadef89df935ad63a83e0"
+  },
+  "id": "4N7Lz8vyOem5k1vx",
+  "tags": []
+}

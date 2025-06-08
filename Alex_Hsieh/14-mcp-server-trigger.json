@@ -1,0 +1,310 @@
+{
+  "name": "n8n MCP Server - Calculator / CRM",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "calculator"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        -20
+      ],
+      "id": "a3551592-76db-405f-a7a7-87c4e2d229e9",
+      "name": "MCP Server Trigger",
+      "webhookId": "e40addfe-f896-47bf-966f-55b92bfe2b4d"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        100,
+        220
+      ],
+      "id": "ac0abc87-36b1-46ef-ad14-b6a27fdd9a72",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "content": "## 計算機功能\n",
+        "height": 220,
+        "width": 230,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        160
+      ],
+      "id": "d2ee7859-ca05-46ba-b96f-59be11defb2a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Airtable 功能 (CRM)\n",
+        "height": 220,
+        "width": 550,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        160
+      ],
+      "id": "1648be4e-3eee-4b88-9b42-da8b6a02f8d3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "app5DqpHK079EzzQj",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbldGkpPw10LpKQmZ",
+          "mode": "list",
+          "cachedResultName": "Customer",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+        },
+        "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        540,
+        220
+      ],
+      "id": "3538c770-1443-4733-be8e-36ff85766cfe",
+      "name": "CRM_GET",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "rttDqNgMO69z6Sfu",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app5DqpHK079EzzQj",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbldGkpPw10LpKQmZ",
+          "mode": "list",
+          "cachedResultName": "Customer",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        380,
+        220
+      ],
+      "id": "8891ae31-0707-4eb7-b3b4-5ab0fbe0df65",
+      "name": "CRM_ListAll",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "rttDqNgMO69z6Sfu",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app5DqpHK079EzzQj",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbldGkpPw10LpKQmZ",
+          "mode": "list",
+          "cachedResultName": "Customer",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "公司名稱": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('____', ``, 'string') }}",
+            "電話": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}",
+            "電子郵件": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('____', ``, 'string') }}",
+            "狀態": "尚未拜訪",
+            "地址": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "公司名稱",
+              "displayName": "公司名稱",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "電話",
+              "displayName": "電話",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "電子郵件",
+              "displayName": "電子郵件",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "狀態",
+              "displayName": "狀態",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "尚未拜訪",
+                  "value": "尚未拜訪"
+                },
+                {
+                  "name": "潛在機會",
+                  "value": "潛在機會"
+                },
+                {
+                  "name": "洽談中",
+                  "value": "洽談中"
+                },
+                {
+                  "name": "成交",
+                  "value": "成交"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "地址",
+              "displayName": "地址",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        700,
+        220
+      ],
+      "id": "7c127a7d-c008-4625-9dfa-92c083569cfa",
+      "name": "CRM_Create",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "rttDqNgMO69z6Sfu",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM_GET": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM_ListAll": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM_Create": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c14f7c1b-4d67-4ae2-acdb-7ba9e6514c56",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5b5522015f8579a80867bd04784d46aecd597f3c7a08b45cdbc65ee34cc44c1e"
+  },
+  "id": "jPlWTnOUUK2vZLed",
+  "tags": []
+}
