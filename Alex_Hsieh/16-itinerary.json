@@ -1,0 +1,531 @@
+{
+    "name": "🔥 n8n AI Agent + thinking 思考模式",
+    "nodes": [
+        {
+            "parameters": {
+                "content": "## LLM - GPT 4.1\n\n",
+                "height": 220,
+                "width": 510,
+                "color": 6
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -440,
+                280
+            ],
+            "id": "3fd94e89-f98c-4d0c-88b5-893c1776e6eb",
+            "name": "Sticky Note3"
+        },
+        {
+            "parameters": {
+                "options": {
+                    "systemMessage": "=You are a helpful assistant\n\n## Think:\n- use thinkg tool for directing complex task to organize things from all tools\n\n## Tool:\n- 時間：{{ $now }} UTC0 - 目前時區 UTC+8\n- use tavily for web search\n- use firecrawl for web scraping\n- use airbnb for searching accommodation\n\n- use n8n MCP client CRM for customer list - Search 請使用 airtable 的 Filter 語法\n\n- use n8n MCP client Email for email me and customer contact mail \n  - use gmail 的格式\n  - 請使用 html 的 gmail 語法寄送\n\n- use n8n MCP client Calendar for booking my time and customer contact mail \n  - only office meeting to add customer contact mail \n  - 請使用 google calander 的格式 \n  - booking 時請給開始時間與結束時間\n  - Description 請作為事件標題\n  - Summary 請加入必要資訊\n  - Attendees 請加入 my email \n\n## info\nmy email info: n8n-automation@example.com\n\nmake sure to ListTool first then the executeTool\n\n## 輸出規則\n地區：台灣  \n時間：UTC8 - {{ $now }}\n輸出語言：繁體中文"
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "typeVersion": 1.7,
+            "position": [
+                460,
+                140
+            ],
+            "id": "96ddd540-b0d4-401b-a5e4-a3ac2257f4a9",
+            "name": "AI Agent"
+        },
+        {
+            "parameters": {
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+            "typeVersion": 1.1,
+            "position": [
+                220,
+                140
+            ],
+            "id": "d0895295-6adc-4e1f-8623-8e20a9f28881",
+            "name": "When chat message received",
+            "webhookId": "1972b4f0-8de8-487c-a7d5-58666bc662d8"
+        },
+        {
+            "parameters": {},
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "typeVersion": 1.3,
+            "position": [
+                200,
+                380
+            ],
+            "id": "abd68e04-f7c8-4ada-9d41-dd08388fa1a8",
+            "name": "Window Buffer Memory"
+        },
+        {
+            "parameters": {
+                "description": "=Use the tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed."
+            },
+            "type": "@n8n/n8n-nodes-langchain.toolThink",
+            "typeVersion": 1,
+            "position": [
+                1100,
+                360
+            ],
+            "id": "a729f2f2-d4bd-496b-be8e-d093a2efbd25",
+            "name": "Think"
+        },
+        {
+            "parameters": {
+                "content": "## Thinking\n\n",
+                "height": 220,
+                "width": 330,
+                "color": 4
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                980,
+                280
+            ],
+            "id": "366b2bd4-45ff-492e-8e0a-03b36cd2a91a",
+            "name": "Sticky Note4"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4.1",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4.1"
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.2,
+            "position": [
+                -40,
+                380
+            ],
+            "id": "647a26f3-2eab-47d9-8a4a-3e33406d7a00",
+            "name": "OpenAI 4.1",
+            "credentials": {
+                "openAiApi": {
+                    "id": "vo1Kz0pllXw8z5Cv",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "executeTool",
+                "toolName": "={{ $fromAI(\"tool\", \"the selected tool to use\") }}",
+                "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+            },
+            "type": "n8n-nodes-mcp.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                280,
+                740
+            ],
+            "id": "e6b65ce8-46e2-4c6d-9065-39fc4acf7682",
+            "name": "Firecrawl Excute",
+            "credentials": {
+                "mcpClientApi": {
+                    "id": "j552oV8Q79JoZlgX",
+                    "name": "MCP: firecrawl"
+                }
+            }
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-mcp.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                160,
+                740
+            ],
+            "id": "93dbedff-ea6d-43a8-89a2-683d6896f8a0",
+            "name": "Firecrawl Tool",
+            "credentials": {
+                "mcpClientApi": {
+                    "id": "j552oV8Q79JoZlgX",
+                    "name": "MCP: firecrawl"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "content": "## API 工具 with 社群 MCP\n",
+                "height": 240,
+                "width": 780
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -120,
+                660
+            ],
+            "id": "490be2b6-d3d8-4bad-b83c-c84a82a3852e",
+            "name": "Sticky Note"
+        },
+        {
+            "parameters": {
+                "operation": "executeTool",
+                "toolName": "={{ $fromAI(\"tool\", \"the selected tool to use\") }}",
+                "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+            },
+            "type": "n8n-nodes-mcp.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                20,
+                740
+            ],
+            "id": "fe0babe9-c7b3-4d6a-8721-ef4d3f1f2aac",
+            "name": "Tavily Execute",
+            "credentials": {
+                "mcpClientApi": {
+                    "id": "7TdgjwHUawbMOlQe",
+                    "name": "MCP: tavily (web search)"
+                }
+            }
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-mcp.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                -100,
+                740
+            ],
+            "id": "20a950fe-df5c-4619-8164-047450f1ac3e",
+            "name": "Tavily Tool",
+            "credentials": {
+                "mcpClientApi": {
+                    "id": "7TdgjwHUawbMOlQe",
+                    "name": "MCP: tavily (web search)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "sseEndpoint": "https://n8n-alex.zeabur.app/mcp/crm/sse"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                800,
+                740
+            ],
+            "id": "31148415-4a22-46ec-802a-21d6f6c04110",
+            "name": "n8n MCP - CRM"
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-mcp.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                420,
+                740
+            ],
+            "id": "12901bb2-340f-433e-b2eb-cf5e1be95024",
+            "name": "Airbnb Tool",
+            "credentials": {
+                "mcpClientApi": {
+                    "id": "otSjtnY4JcpjSwo8",
+                    "name": "MCP: Airbnb"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "executeTool",
+                "toolName": "={{ $fromAI(\"tool\", \"the selected tool to use\") }}",
+                "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+            },
+            "type": "n8n-nodes-mcp.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                540,
+                740
+            ],
+            "id": "1d16fca2-e13c-4f85-b10a-8ba685920377",
+            "name": "Airbnb Excute",
+            "credentials": {
+                "mcpClientApi": {
+                    "id": "otSjtnY4JcpjSwo8",
+                    "name": "MCP: Airbnb"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "sseEndpoint": "=https://n8n-alex.zeabur.app/mcp/calendar/sse"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                960,
+                740
+            ],
+            "id": "f06e475e-3ca9-44c8-ac1e-ea4dee434bbc",
+            "name": "n8n MCP - Calendar"
+        },
+        {
+            "parameters": {
+                "content": "## API 工具 with n8n MCP\n",
+                "height": 240,
+                "width": 600,
+                "color": 3
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                680,
+                660
+            ],
+            "id": "78b36efb-6e50-40c8-baf8-7eb7083b76d3",
+            "name": "Sticky Note1"
+        },
+        {
+            "parameters": {
+                "sseEndpoint": "=https://n8n-alex.zeabur.app/mcp/email/sse"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                1120,
+                740
+            ],
+            "id": "dcbcdff7-11dc-4651-9436-88c1c51e7b8e",
+            "name": "n8n MCP - Email"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4o",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4o"
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.2,
+            "position": [
+                -200,
+                380
+            ],
+            "id": "486e9dd3-feb8-468f-8838-46cbd7a033bd",
+            "name": "OpenAI 4o",
+            "credentials": {
+                "openAiApi": {
+                    "id": "vo1Kz0pllXw8z5Cv",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "projectId": {
+                    "__rl": true,
+                    "value": "common-411213",
+                    "mode": "list",
+                    "cachedResultName": "common"
+                },
+                "modelName": "gemini-2.5-pro-preview-03-25",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatGoogleVertex",
+            "typeVersion": 1,
+            "position": [
+                -360,
+                380
+            ],
+            "id": "6b688fb6-3b79-4093-bd15-e9ab258689ed",
+            "name": "Gemini 2.5 pro",
+            "credentials": {
+                "googleApi": {
+                    "id": "fVWRWImpeIhzcXbl",
+                    "name": "Google Service Account account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "When chat message received": {
+            "main": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Window Buffer Memory": {
+            "ai_memory": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_memory",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Think": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI 4.1": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Tavily Tool": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Tavily Execute": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Firecrawl Tool": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Firecrawl Excute": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "n8n MCP - CRM": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Airbnb Tool": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Airbnb Excute": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "n8n MCP - Calendar": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "n8n MCP - Email": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI 4o": {
+            "ai_languageModel": [
+                []
+            ]
+        }
+    },
+    "active": false,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "3d2a978d-8c2e-4486-9060-7e2e0be7a695",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+    },
+    "id": "Y1P8TqdIpxWDPAtv",
+    "tags": [
+        {
+            "createdAt": "2025-01-21T07:13:36.575Z",
+            "updatedAt": "2025-01-21T07:13:36.575Z",
+            "id": "yM2YsERN8eAqo2ZC",
+            "name": "ai-agent"
+        },
+        {
+            "createdAt": "2025-03-17T08:20:06.861Z",
+            "updatedAt": "2025-03-17T08:20:06.861Z",
+            "id": "pvRmfUcHdkTEgrk9",
+            "name": "yt"
+        },
+        {
+            "createdAt": "2025-03-17T08:20:09.856Z",
+            "updatedAt": "2025-03-17T08:20:09.856Z",
+            "id": "Xk0zSy3b5bn7QLYA",
+            "name": "mcp"
+        }
+    ]
+}
