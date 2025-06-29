@@ -1,0 +1,455 @@
+{
+  "name": "14-MCP_Server and MCP_Client",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "calculator"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -20
+      ],
+      "id": "e0dd8860-c406-436b-8d64-dcaea909e244",
+      "name": "MCP Server Trigger",
+      "webhookId": "e40addfe-f896-47bf-966f-55b92bfe2b4d"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        220
+      ],
+      "id": "fc74c4b2-d35f-4c48-9ac1-755415ad791d",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "content": "## 計算機功能\n",
+        "height": 220,
+        "width": 230,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        160
+      ],
+      "id": "16d40375-d35e-4a21-9f3d-ee2edaf1717b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Airtable 功能 (CRM)\n",
+        "height": 220,
+        "width": 550,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        160
+      ],
+      "id": "43f78764-ad57-4456-b238-636bdee517b6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "app5DqpHK079EzzQj",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbldGkpPw10LpKQmZ",
+          "mode": "list",
+          "cachedResultName": "Customer",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+        },
+        "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        220
+      ],
+      "id": "e916d078-123e-464c-8824-0a1c576688e7",
+      "name": "CRM_GET",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "QMRUyrivnDW6Kl8K",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appu0tYmJCz5fxJfE",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/appu0tYmJCz5fxJfE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbljhiTvL1GE4pVzg",
+          "mode": "list",
+          "cachedResultName": "customer",
+          "cachedResultUrl": "https://airtable.com/appu0tYmJCz5fxJfE/tbljhiTvL1GE4pVzg"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        -60,
+        220
+      ],
+      "id": "fe95cf99-a184-4a4f-9302-1f32738e924c",
+      "name": "CRM_ListAll",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "QMRUyrivnDW6Kl8K",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app5DqpHK079EzzQj",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbldGkpPw10LpKQmZ",
+          "mode": "list",
+          "cachedResultName": "Customer",
+          "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "公司名稱": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('____', ``, 'string') }}",
+            "電話": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}",
+            "電子郵件": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('____', ``, 'string') }}",
+            "狀態": "尚未拜訪",
+            "地址": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "公司名稱",
+              "displayName": "公司名稱",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "電話",
+              "displayName": "電話",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "電子郵件",
+              "displayName": "電子郵件",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "狀態",
+              "displayName": "狀態",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "尚未拜訪",
+                  "value": "尚未拜訪"
+                },
+                {
+                  "name": "潛在機會",
+                  "value": "潛在機會"
+                },
+                {
+                  "name": "洽談中",
+                  "value": "洽談中"
+                },
+                {
+                  "name": "成交",
+                  "value": "成交"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "地址",
+              "displayName": "地址",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        260,
+        220
+      ],
+      "id": "11df3953-ecde-4201-b21b-dfab4ca0308d",
+      "name": "CRM_Create",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "QMRUyrivnDW6Kl8K",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=## Context\n- Today is {{ $now.format('dd LLL yy') }}.\n- Current time: {{ $now.format('h:mm a') }} in Taiwan.\n- Language: 繁體中文\n- When asked, you are an AI Agent running as an n8n workflow.\n\n## Tool\n- CRM: 客戶名單，請使用 MCP Client - Search 請使用 airtable 的 Filter 語法\n- Calculate: 請使用 MCP Client\n\n## Output\nKeep responses short and clear, optimized for voice delivery. Don't hallucinate, if you don't know the answer, say you don't know. \nOutput text Language should be 繁體中文.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1000,
+        80
+      ],
+      "id": "b2f3bd6b-79e1-4d79-9282-d60e5c7cc43a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        760,
+        80
+      ],
+      "id": "95c73da3-9e89-4ecb-8cb2-be9f0b5b1109",
+      "name": "When chat message received",
+      "webhookId": "c436c0d8-d8b3-434b-8b98-59818a3efd78"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1100,
+        300
+      ],
+      "id": "25b89b5d-7d45-462c-9e21-7a6f53eb0821",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "http://localhost:5678/mcp/calculator/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        300
+      ],
+      "id": "d8c2c43f-c3bb-4af3-b62f-37df6384f6e2",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "deepseek-chat",
+          "mode": "list",
+          "cachedResultName": "deepseek-chat"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        300
+      ],
+      "id": "67e9bba3-69dd-4ac7-8a8b-6be78513ed8e",
+      "name": "DeepSeek",
+      "credentials": {
+        "openAiApi": {
+          "id": "pjnZq4qglBFXMyGm",
+          "name": "DeepSeek"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## AI Agent + DeepSeek + MCP Client\n",
+        "height": 520,
+        "width": 990,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        540,
+        -60
+      ],
+      "id": "439cb53d-7cc5-4d42-b61b-0c9530ee22a7",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM_GET": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM_ListAll": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM_Create": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d9fdc3e8-97d7-4411-b9cb-2ac92b3ce62f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "54fce9b01344f969e49cb1bed65fca201a0cb4cc2db83a8868fdb30e33bb0692"
+  },
+  "id": "ZAGeRy5m896lAMkX",
+  "tags": [
+    {
+      "createdAt": "2025-06-17T08:49:40.122Z",
+      "updatedAt": "2025-06-17T08:49:40.122Z",
+      "id": "olHfNymye7nSTY1q",
+      "name": "Alex"
+    }
+  ]
+}

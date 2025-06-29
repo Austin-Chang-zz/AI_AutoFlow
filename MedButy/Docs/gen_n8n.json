@@ -1,0 +1,146 @@
+{
+    "name": "HubSpot Lead Qualification",
+    "nodes": [
+        {
+            "id": "hubspotTrigger",
+            "name": "HubSpot New Contact",
+            "type": "n8n-nodes-base.hubspotTrigger",
+            "parameters": {
+                "eventName": "contact.created"
+                // ... other HubSpot trigger configurations
+            },
+            "typeVersion": 1,
+            "position": [
+                400,
+                200
+            ]
+        },
+        {
+            "id": "extractWebsite",
+            "name": "Extract Website & Check",
+            "type": "n8n-nodes-base.function",
+            "parameters": {
+                "functionCode": "const companyWebsite = $json.properties.website.value; // Assuming 'website' is the property name\nconst isEnterprise = companyWebsite && companyWebsite.includes('enterprise');\nreturn [{ json: { isEnterprise: isEnterprise, leadDetails: $json } }];"
+            },
+            "typeVersion": 1,
+            "position": [
+                650,
+                200
+            ]
+        },
+        {
+            "id": "conditionalCheck",
+            "name": "Is Enterprise Lead?",
+            "type": "n8n-nodes-base.if",
+            "parameters": {
+                "value1": "={{$json.isEnterprise}}",
+                "operation": "true"
+            },
+            "typeVersion": 1,
+            "position": [
+                900,
+                200
+            ]
+        },
+        {
+            "id": "sendEmail",
+            "name": "Send Email to Sales Manager",
+            "type": "n8n-nodes-base.emailSend",
+            "parameters": {
+                "to": "sales_manager@example.com",
+                "subject": "New High-Value Lead: {{$json.leadDetails.properties.firstname.value}} {{$json.leadDetails.properties.lastname.value}}",
+                "body": "A new lead, {{$json.leadDetails.properties.firstname.value}} {{$json.leadDetails.properties.lastname.value}} ({{$json.leadDetails.properties.email.value}}), has been identified as potentially high-value. Their company website is: {{$json.leadDetails.properties.website.value}}",
+                "from": "automation@example.com"
+                // ... other email configurations
+            },
+            "typeVersion": 1,
+            "position": [
+                1150,
+                100
+            ]
+        },
+        {
+            "id": "tagHighValue",
+            "name": "Tag High-Value in HubSpot",
+            "type": "n8n-nodes-base.hubspot",
+            "parameters": {
+                "operation": "update",
+                "resource": "contact",
+                "contactId": "={{$json.leadDetails.id}}",
+                "additionalFields": {
+                    "properties": [
+                        {
+                            "property": "hs_lead_status", // Example property, might be custom or different
+                            "value": "High-Value"
+                        }
+                    ]
+                }
+                // ... other HubSpot update configurations
+            },
+            "typeVersion": 1,
+            "position": [
+                1150,
+                300
+            ]
+        },
+        {
+            "id": "addToGeneralList",
+            "name": "Add to General Leads List",
+            "type": "n8n-nodes-base.hubspot",
+            "parameters": {
+                "operation": "addToList",
+                "resource": "contact",
+                "contactId": "={{$json.leadDetails.id}}",
+                "listId": "YOUR_GENERAL_LEADS_LIST_ID" // Replace with actual List ID
+                // ... other HubSpot list configurations
+            },
+            "typeVersion": 1,
+            "position": [
+                1150,
+                500
+            ]
+        }
+    ],
+    "connections": {
+        "hubspotTrigger": {
+            "main": [
+                [
+                    {
+                        "node": "extractWebsite",
+                        "input": "main"
+                    }
+                ]
+            ]
+        },
+        "extractWebsite": {
+            "main": [
+                [
+                    {
+                        "node": "conditionalCheck",
+                        "input": "main"
+                    }
+                ]
+            ]
+        },
+        "conditionalCheck": {
+            "main": [
+                [
+                    {
+                        "node": "sendEmail",
+                        "input": "main"
+                    },
+                    {
+                        "node": "tagHighValue",
+                        "input": "main"
+                    }
+                ],
+                [
+                    {
+                        "node": "addToGeneralList",
+                        "input": "main"
+                    }
+                ]
+            ]
+        }
+    }
+}
