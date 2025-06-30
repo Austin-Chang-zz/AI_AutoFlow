@@ -1,0 +1,486 @@
+{
+    "name": "🔥 n8n MCP Server - CRM",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "crm"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+            "typeVersion": 1,
+            "position": [
+                0,
+                0
+            ],
+            "id": "8e3b0fcd-7b21-43d1-9760-c949cd07eb5c",
+            "name": "MCP Server Trigger",
+            "webhookId": "b3545967-f26c-43b9-8fce-7f3189e938bb"
+        },
+        {
+            "parameters": {
+                "content": "## Airtable 功能 (CRM)\n",
+                "height": 300,
+                "width": 1050,
+                "color": 2
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -240,
+                120
+            ],
+            "id": "d43cc5bd-5086-4d37-924b-db2ec40d67c8",
+            "name": "Sticky Note"
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tbldGkpPw10LpKQmZ",
+                    "mode": "list",
+                    "cachedResultName": "Customer",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+                },
+                "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                100,
+                240
+            ],
+            "id": "5eb56adf-b1fc-4b6d-87dd-b4eba7dcb8bb",
+            "name": "CRM_GET",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "create",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tbldGkpPw10LpKQmZ",
+                    "mode": "list",
+                    "cachedResultName": "Customer",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "公司名稱": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('____', ``, 'string') }}",
+                        "電話": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}",
+                        "電子郵件": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('____', ``, 'string') }}",
+                        "狀態": "尚未拜訪",
+                        "地址": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "公司名稱",
+                            "displayName": "公司名稱",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "電話",
+                            "displayName": "電話",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "電子郵件",
+                            "displayName": "電子郵件",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "狀態",
+                            "displayName": "狀態",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "尚未拜訪",
+                                    "value": "尚未拜訪"
+                                },
+                                {
+                                    "name": "潛在機會",
+                                    "value": "潛在機會"
+                                },
+                                {
+                                    "name": "洽談中",
+                                    "value": "洽談中"
+                                },
+                                {
+                                    "name": "成交",
+                                    "value": "成交"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "地址",
+                            "displayName": "地址",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                260,
+                240
+            ],
+            "id": "faeb0760-46da-4abe-9b9a-3aee25903a56",
+            "name": "CRM_Create",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "deleteRecord",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tbldGkpPw10LpKQmZ",
+                    "mode": "list",
+                    "cachedResultName": "Customer",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+                },
+                "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}"
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                420,
+                240
+            ],
+            "id": "0b9432f2-4d0c-4785-9876-1b78b7388958",
+            "name": "CRM_Delete",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "update",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tbldGkpPw10LpKQmZ",
+                    "mode": "list",
+                    "cachedResultName": "Customer",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "公司名稱": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('______using_to_match_', ``, 'string') }}",
+                        "電話": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}",
+                        "電子郵件": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('____', ``, 'string') }}",
+                        "狀態": "尚未拜訪",
+                        "地址": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('__', ``, 'string') }}"
+                    },
+                    "matchingColumns": [
+                        "公司名稱"
+                    ],
+                    "schema": [
+                        {
+                            "id": "id",
+                            "displayName": "id",
+                            "required": false,
+                            "defaultMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "公司名稱",
+                            "displayName": "公司名稱",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "電話",
+                            "displayName": "電話",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "電子郵件",
+                            "displayName": "電子郵件",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "狀態",
+                            "displayName": "狀態",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "尚未拜訪",
+                                    "value": "尚未拜訪"
+                                },
+                                {
+                                    "name": "潛在機會",
+                                    "value": "潛在機會"
+                                },
+                                {
+                                    "name": "洽談中",
+                                    "value": "洽談中"
+                                },
+                                {
+                                    "name": "成交",
+                                    "value": "成交"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "地址",
+                            "displayName": "地址",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                580,
+                240
+            ],
+            "id": "767dba6d-b4e0-4579-a122-f887a5a252ca",
+            "name": "CRM_Update",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "search",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tbldGkpPw10LpKQmZ",
+                    "mode": "list",
+                    "cachedResultName": "Customer",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tbldGkpPw10LpKQmZ"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                -60,
+                240
+            ],
+            "id": "6539e07a-a8ff-4043-855d-b8e3771517f7",
+            "name": "CRM_ListAll",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "CRM_GET": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "CRM_Create": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "CRM_Delete": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "CRM_Update": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "CRM_ListAll": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": true,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "9fa525ed-25af-44a0-ac66-722ec4678733",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+    },
+    "id": "TpmAeICZq4uzd9XP",
+    "tags": [
+        {
+            "createdAt": "2025-01-21T07:13:36.575Z",
+            "updatedAt": "2025-01-21T07:13:36.575Z",
+            "id": "yM2YsERN8eAqo2ZC",
+            "name": "ai-agent"
+        },
+        {
+            "createdAt": "2025-03-17T08:20:06.861Z",
+            "updatedAt": "2025-03-17T08:20:06.861Z",
+            "id": "pvRmfUcHdkTEgrk9",
+            "name": "yt"
+        },
+        {
+            "createdAt": "2025-03-17T08:20:09.856Z",
+            "updatedAt": "2025-03-17T08:20:09.856Z",
+            "id": "Xk0zSy3b5bn7QLYA",
+            "name": "mcp"
+        }
+    ]
+}
