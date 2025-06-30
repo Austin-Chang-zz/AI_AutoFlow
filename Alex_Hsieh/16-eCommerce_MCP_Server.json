@@ -1,0 +1,974 @@
+{
+    "name": "🔥 n8n MCP Server - eCommerce",
+    "nodes": [
+        {
+            "parameters": {
+                "path": "store"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+            "typeVersion": 1,
+            "position": [
+                400,
+                0
+            ],
+            "id": "4ad0e86c-92c6-4363-be83-d0a5a86f8e0b",
+            "name": "MCP Server Trigger",
+            "webhookId": "b2fc362e-f6e4-4556-bfb2-f6f26be683fd"
+        },
+        {
+            "parameters": {
+                "content": "## 訂單功能 (Order)\n",
+                "height": 420,
+                "width": 790,
+                "color": 2
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                -240,
+                120
+            ],
+            "id": "83766d5e-3b99-4117-b083-73a737ea5ff0",
+            "name": "Sticky Note"
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "search",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblL0hGnEjpFGs8fY",
+                    "mode": "list",
+                    "cachedResultName": "Orders",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblL0hGnEjpFGs8fY"
+                },
+                "filterByFormula": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Filter_By_Formula', ``, 'string') }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                -180,
+                380
+            ],
+            "id": "0a443fe8-2888-4ce9-a537-4170ed9f4331",
+            "name": "Order_ListAll",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblL0hGnEjpFGs8fY",
+                    "mode": "list",
+                    "cachedResultName": "Orders",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblL0hGnEjpFGs8fY"
+                },
+                "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                -60,
+                380
+            ],
+            "id": "ab4e0b9c-3df3-4563-93b4-393f3628f009",
+            "name": "Order_GET",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "create",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblL0hGnEjpFGs8fY",
+                    "mode": "list",
+                    "cachedResultName": "Orders",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblL0hGnEjpFGs8fY"
+                },
+                "columns": {
+                    "mappingMode": "autoMapInputData",
+                    "value": {
+                        "price": 0
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "user_id",
+                            "displayName": "user_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "order_id",
+                            "displayName": "order_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "purchase_date",
+                            "displayName": "purchase_date",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "dateTime",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "item_name",
+                            "displayName": "item_name",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "iPhone 15",
+                                    "value": "iPhone 15"
+                                },
+                                {
+                                    "name": "AirPods Pro 2",
+                                    "value": "AirPods Pro 2"
+                                },
+                                {
+                                    "name": "Dyson V12",
+                                    "value": "Dyson V12"
+                                },
+                                {
+                                    "name": "Sony WH-1000XM5",
+                                    "value": "Sony WH-1000XM5"
+                                },
+                                {
+                                    "name": "Logitech MX Master 3",
+                                    "value": "Logitech MX Master 3"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "sku",
+                            "displayName": "sku",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "APPLE-IP15",
+                                    "value": "APPLE-IP15"
+                                },
+                                {
+                                    "name": "APPLE-AP2",
+                                    "value": "APPLE-AP2"
+                                },
+                                {
+                                    "name": "DYSON-V12",
+                                    "value": "DYSON-V12"
+                                },
+                                {
+                                    "name": "SONY-WH1000",
+                                    "value": "SONY-WH1000"
+                                },
+                                {
+                                    "name": "LOGI-MX3",
+                                    "value": "LOGI-MX3"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "price",
+                            "displayName": "price",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "number",
+                            "readOnly": false,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                60,
+                380
+            ],
+            "id": "ad6d8760-3218-4af5-994d-31396f2c3d5c",
+            "name": "Order_Create",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "deleteRecord",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblL0hGnEjpFGs8fY",
+                    "mode": "list",
+                    "cachedResultName": "Orders",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblL0hGnEjpFGs8fY"
+                },
+                "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}"
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                180,
+                380
+            ],
+            "id": "2e3239ea-ce5a-468e-9f66-e227b8614982",
+            "name": "Order_Delete",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "update",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblL0hGnEjpFGs8fY",
+                    "mode": "list",
+                    "cachedResultName": "Orders",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblL0hGnEjpFGs8fY"
+                },
+                "columns": {
+                    "mappingMode": "autoMapInputData",
+                    "value": {
+                        "price": 0
+                    },
+                    "matchingColumns": [
+                        "order_id",
+                        "id"
+                    ],
+                    "schema": [
+                        {
+                            "id": "id",
+                            "displayName": "id",
+                            "required": false,
+                            "defaultMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "user_id",
+                            "displayName": "user_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "order_id",
+                            "displayName": "order_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "purchase_date",
+                            "displayName": "purchase_date",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "dateTime",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "item_name",
+                            "displayName": "item_name",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "iPhone 15",
+                                    "value": "iPhone 15"
+                                },
+                                {
+                                    "name": "AirPods Pro 2",
+                                    "value": "AirPods Pro 2"
+                                },
+                                {
+                                    "name": "Dyson V12",
+                                    "value": "Dyson V12"
+                                },
+                                {
+                                    "name": "Sony WH-1000XM5",
+                                    "value": "Sony WH-1000XM5"
+                                },
+                                {
+                                    "name": "Logitech MX Master 3",
+                                    "value": "Logitech MX Master 3"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "sku",
+                            "displayName": "sku",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "APPLE-IP15",
+                                    "value": "APPLE-IP15"
+                                },
+                                {
+                                    "name": "APPLE-AP2",
+                                    "value": "APPLE-AP2"
+                                },
+                                {
+                                    "name": "DYSON-V12",
+                                    "value": "DYSON-V12"
+                                },
+                                {
+                                    "name": "SONY-WH1000",
+                                    "value": "SONY-WH1000"
+                                },
+                                {
+                                    "name": "LOGI-MX3",
+                                    "value": "LOGI-MX3"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "price",
+                            "displayName": "price",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "number",
+                            "readOnly": false,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                300,
+                380
+            ],
+            "id": "9fd5a0f9-28ec-4ff9-867a-4cfd34ce05f2",
+            "name": "Order_Update",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "content": "## 使用者風險功能 (User Risk)\n",
+                "height": 420,
+                "width": 750,
+                "color": 3
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [
+                680,
+                120
+            ],
+            "id": "eb367e0f-f528-474b-a7b0-94ce4c9118ce",
+            "name": "Sticky Note1"
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "search",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblQE1wNJN0eGfrn3",
+                    "mode": "list",
+                    "cachedResultName": "UserRisk",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblQE1wNJN0eGfrn3"
+                },
+                "filterByFormula": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Filter_By_Formula', ``, 'string') }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                700,
+                360
+            ],
+            "id": "123b6a82-b678-4cb2-9926-6c1315c89495",
+            "name": "UserRisk_ListAll",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblQE1wNJN0eGfrn3",
+                    "mode": "list",
+                    "cachedResultName": "UserRisk",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblQE1wNJN0eGfrn3"
+                },
+                "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                840,
+                360
+            ],
+            "id": "90c15990-bf81-4645-840f-959d57c2a35f",
+            "name": "UserRisk_GET",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "create",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblQE1wNJN0eGfrn3",
+                    "mode": "list",
+                    "cachedResultName": "UserRisk",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblQE1wNJN0eGfrn3"
+                },
+                "columns": {
+                    "mappingMode": "autoMapInputData",
+                    "value": {
+                        "is_blacklisted": false
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "user_id",
+                            "displayName": "user_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "membership_level",
+                            "displayName": "membership_level",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "Gold",
+                                    "value": "Gold"
+                                },
+                                {
+                                    "name": "Standard",
+                                    "value": "Standard"
+                                },
+                                {
+                                    "name": "Silver",
+                                    "value": "Silver"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "risk_score",
+                            "displayName": "risk_score",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "number",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "return_count_last_90_days",
+                            "displayName": "return_count_last_90_days",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "number",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "is_blacklisted",
+                            "displayName": "is_blacklisted",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "boolean",
+                            "readOnly": false,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                980,
+                360
+            ],
+            "id": "5e3e9f5f-9f34-4a5c-bba0-62c619c873b9",
+            "name": "UserRisk_Create",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "deleteRecord",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblL0hGnEjpFGs8fY",
+                    "mode": "list",
+                    "cachedResultName": "Orders",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblL0hGnEjpFGs8fY"
+                },
+                "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}"
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                1120,
+                360
+            ],
+            "id": "07384786-eab3-48f7-92e8-e8973c8e7433",
+            "name": "UserRisk_Delete",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "authentication": "airtableOAuth2Api",
+                "operation": "update",
+                "base": {
+                    "__rl": true,
+                    "value": "app5DqpHK079EzzQj",
+                    "mode": "list",
+                    "cachedResultName": "Contacts",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj"
+                },
+                "table": {
+                    "__rl": true,
+                    "value": "tblQE1wNJN0eGfrn3",
+                    "mode": "list",
+                    "cachedResultName": "UserRisk",
+                    "cachedResultUrl": "https://airtable.com/app5DqpHK079EzzQj/tblQE1wNJN0eGfrn3"
+                },
+                "columns": {
+                    "mappingMode": "autoMapInputData",
+                    "value": {
+                        "is_blacklisted": false
+                    },
+                    "matchingColumns": [
+                        "id",
+                        "user_id"
+                    ],
+                    "schema": [
+                        {
+                            "id": "id",
+                            "displayName": "id",
+                            "required": false,
+                            "defaultMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "user_id",
+                            "displayName": "user_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "string",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "membership_level",
+                            "displayName": "membership_level",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "options",
+                            "options": [
+                                {
+                                    "name": "Gold",
+                                    "value": "Gold"
+                                },
+                                {
+                                    "name": "Standard",
+                                    "value": "Standard"
+                                },
+                                {
+                                    "name": "Silver",
+                                    "value": "Silver"
+                                }
+                            ],
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "risk_score",
+                            "displayName": "risk_score",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "number",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "return_count_last_90_days",
+                            "displayName": "return_count_last_90_days",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "number",
+                            "readOnly": false,
+                            "removed": false
+                        },
+                        {
+                            "id": "is_blacklisted",
+                            "displayName": "is_blacklisted",
+                            "required": false,
+                            "defaultMatch": false,
+                            "canBeUsedToMatch": true,
+                            "display": true,
+                            "type": "boolean",
+                            "readOnly": false,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.airtableTool",
+            "typeVersion": 2.1,
+            "position": [
+                1280,
+                360
+            ],
+            "id": "5bba38cb-46f0-4435-9c72-16ffd4bbc06d",
+            "name": "UserRisk_Update",
+            "credentials": {
+                "airtableOAuth2Api": {
+                    "id": "pXp6TYwAXwFWa4qD",
+                    "name": "Airtable account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "Order_ListAll": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Order_GET": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Order_Create": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Order_Delete": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Order_Update": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "UserRisk_ListAll": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "UserRisk_GET": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "UserRisk_Create": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "UserRisk_Delete": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "UserRisk_Update": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": true,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "6e0e62b5-a83c-403b-979b-2fece26e89b3",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+    },
+    "id": "b5lsIoSqpPQRxVgF",
+    "tags": [
+        {
+            "createdAt": "2025-01-21T07:13:36.575Z",
+            "updatedAt": "2025-01-21T07:13:36.575Z",
+            "id": "yM2YsERN8eAqo2ZC",
+            "name": "ai-agent"
+        },
+        {
+            "createdAt": "2025-03-17T08:20:06.861Z",
+            "updatedAt": "2025-03-17T08:20:06.861Z",
+            "id": "pvRmfUcHdkTEgrk9",
+            "name": "yt"
+        },
+        {
+            "createdAt": "2025-03-17T08:20:09.856Z",
+            "updatedAt": "2025-03-17T08:20:09.856Z",
+            "id": "Xk0zSy3b5bn7QLYA",
+            "name": "mcp"
+        }
+    ]
+}
