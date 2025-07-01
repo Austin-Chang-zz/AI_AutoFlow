@@ -1,0 +1,250 @@
+{
+  "name": "code",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=你是一个内容创作与发布助手，擅长为指定主题生成文章。",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=以 {{ $json.topic}} 为主题，生成一篇文章，要求如下：\n1. 字数控制在 300 ~ 500 字之间  \n2. 包含标题（使用 H2 格式）和正文部分（分段排版）\n\n输出结果，严格以如下json格式输出：\n{\n    \"title\": \"标题\",\n\t\"content\": \"正文\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        380,
+        180
+      ],
+      "id": "de29bc84-3e7f-45ab-9730-62bbba2bae17",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        320,
+        380
+      ],
+      "id": "fe546370-50ee-42ad-992a-6ebbc27c8122",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C6tvtGc16y82WGvY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "输入话题",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "topic"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        180
+      ],
+      "id": "3d9b2407-0b6a-42f1-b7f8-87b4667b720f",
+      "name": "On form submission",
+      "webhookId": "d95018cb-cd6d-4303-862a-ce32a9d7f4a8"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"title\": \"标题\",\n\t\"content\": \"正文\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        400
+      ],
+      "id": "7bbf31e1-72e9-472e-9e34-e4aaa03bc13c",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gcbpckvz.ap-northeast-1.clawcloudrun.com/wp-json/wp/v2/posts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $json.output.title }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.output.content }}"
+            },
+            {
+              "name": "status",
+              "value": "=publish"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        180
+      ],
+      "id": "8eb5af21-8050-4fce-96b8-1d83e1d77d16",
+      "name": "发布文章",
+      "credentials": {
+        "wordpressApi": {
+          "id": "PfaFe60S46oq600k",
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d0c61bf-3970-4a0c-800b-ef3c134bee57",
+              "name": "output.title",
+              "value": "={{ $json.output.title.replaceAll('人生', '生活') }}",
+              "type": "string"
+            },
+            {
+              "id": "600e88ae-d45f-4355-8f26-ec6d7406bfe5",
+              "name": "output.content",
+              "value": "={{ $json.output.content }}",
+              "type": "string"
+            },
+            {
+              "id": "bbf00e00-d175-4cad-aef3-6614b2e67cd2",
+              "name": "output.length",
+              "value": "={{ $json.output.content.length }}",
+              "type": "number"
+            },
+            {
+              "id": "f5bb24b9-82e1-4421-9ad6-b985a0d18cb3",
+              "name": "output.time",
+              "value": "={{ $now }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        180
+      ],
+      "id": "dcd7c8af-270a-4d07-a923-eb94df36878a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "## code+环境变量\n",
+        "height": 620,
+        "width": 1240,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "00fba12f-1dfb-422d-b138-e4c963c5d3fd",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "发布文章",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d234074a-cb8a-4688-834b-b812da9bbb20",
+  "meta": {
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "tqqUOsZhg742RTYo",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T16:20:56.255Z",
+      "updatedAt": "2025-06-03T16:20:56.255Z",
+      "id": "M3l9CrjShYxbin3S",
+      "name": "tips"
+    }
+  ]
+}

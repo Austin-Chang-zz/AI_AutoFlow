@@ -1,0 +1,138 @@
+{
+  "name": "human",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "工单申请",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "id",
+              "fieldType": "number",
+              "placeholder": "工单ID"
+            },
+            {
+              "fieldLabel": "name",
+              "placeholder": "申请人姓名"
+            },
+            {
+              "fieldLabel": "event",
+              "placeholder": "工单事项"
+            },
+            {
+              "fieldLabel": "state",
+              "placeholder": "审批状态"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -380,
+        -80
+      ],
+      "id": "98c75f56-3dc7-4834-9f9a-9307fdae6639",
+      "name": "提交工单",
+      "webhookId": "5ec4c1aa-1ca8-4caf-abde-59c286f6fc68"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "",
+        "message": "=请审批工单\n\nID：{{ $json.id }}\n发起人：{{ $json.name }}\n事项：{{ $json.event }}\n状态：{{ $json.state }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -140,
+        -80
+      ],
+      "id": "807c1c83-98a5-49b3-961c-d418f4bc874b",
+      "name": "人工审批",
+      "webhookId": "653e1214-6a2a-45a5-87ac-21c225097ee9",
+      "credentials": {
+        "telegramApi": {
+          "id": "I5lDgMHkDlu4Q7K2",
+          "name": "Telegram account rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://workorder/id/{{ $('提交工单').item.json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        -80
+      ],
+      "id": "4dae301d-cdb9-4816-8c14-f35b2131d843",
+      "name": "工单处理",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## 人工参与 \n",
+        "height": 320,
+        "width": 980,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -560,
+        -180
+      ],
+      "typeVersion": 1,
+      "id": "40ec7d20-b676-4c04-912f-ba3fbf12be31",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "提交工单": {
+      "main": [
+        [
+          {
+            "node": "人工审批",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "人工审批": {
+      "main": [
+        [
+          {
+            "node": "工单处理",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "817b2d87-ca14-4b7d-905a-faa6b2f108bd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "938gn2ge8biV5PLM",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T16:20:56.255Z",
+      "updatedAt": "2025-06-03T16:20:56.255Z",
+      "id": "M3l9CrjShYxbin3S",
+      "name": "tips"
+    }
+  ]
+}

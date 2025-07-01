@@ -1,0 +1,251 @@
+{
+  "name": "io",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -440,
+        200
+      ],
+      "id": "e05941f5-acb3-438c-8e3c-c4e300675672",
+      "name": "Telegram Trigger",
+      "webhookId": "761bce56-52c9-490c-80df-c5e520b41579",
+      "credentials": {
+        "telegramApi": {
+          "id": "I5lDgMHkDlu4Q7K2",
+          "name": "Telegram account rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=你是一个内容创作与发布助手，擅长为指定主题生成文章。",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=以 {{ $json.chatInput }} 为主题，生成一篇文章，要求如下：\n\n1. 字数控制在 300 ~ 500 字之间  \n2. 包含标题（使用 H2 格式）和正文部分（分段排版）\n\n输出结果，轻易如下json格式输出：\n{\n\t\"title\": \"标题\",\n\t\"content\": \"正文\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        80,
+        80
+      ],
+      "id": "1de088a7-e340-4959-b6fe-dc4f210225ea",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        40,
+        280
+      ],
+      "id": "84039c4f-7706-49b2-8eb0-be81052c3637",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C6tvtGc16y82WGvY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 结构化输入/输出\n",
+        "height": 620,
+        "width": 1360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -600,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "0aff7117-1602-4544-9115-d4aff587ce08",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -440,
+        -20
+      ],
+      "id": "894ea106-faad-4628-be4f-2e8cbee09ad2",
+      "name": "When chat message received",
+      "webhookId": "0990d721-b9b7-4607-8790-7af2d0f414e3"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"chatInput\": \"{{ $json.message.text }}\"\n}\n ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -220,
+        200
+      ],
+      "id": "71b8afb0-3636-4e60-94db-b9f962cce5fb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"标题\",\n\t\"content\": \"正文\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        260,
+        300
+      ],
+      "id": "f51e017f-a3e7-47dc-8bd7-39707137986b",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gcbpckvz.ap-northeast-1.clawcloudrun.com/wp-json/wp/v2/posts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $json.output.title }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.output.content }}"
+            },
+            {
+              "name": "status",
+              "value": "=publish"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        80
+      ],
+      "id": "3d47a033-1207-492b-a8c3-291e3b554c3b",
+      "name": "发布文章",
+      "credentials": {
+        "wordpressApi": {
+          "id": "PfaFe60S46oq600k",
+          "name": "Wordpress account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "发布文章",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cfee6206-05f4-4a5f-80b7-168ae233b0ba",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "eysm111jcUoAoe5d",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T14:12:25.863Z",
+      "updatedAt": "2025-06-03T14:12:25.863Z",
+      "id": "QGYpskdFBedmml5y",
+      "name": "io"
+    }
+  ]
+}

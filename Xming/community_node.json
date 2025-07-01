@@ -1,0 +1,91 @@
+{
+  "name": "community-node",
+  "nodes": [
+    {
+      "parameters": {
+        "pdfName": "demo"
+      },
+      "type": "n8n-nodes-pdfkit.pdfKit",
+      "typeVersion": 1,
+      "position": [
+        200,
+        0
+      ],
+      "id": "00f8626b-5f42-463c-90e2-e43a6794aa3c",
+      "name": "PDFKit"
+    },
+    {
+      "parameters": {
+        "formTitle": "上传图片",
+        "formDescription": "上传图片生成PDF",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "images",
+              "fieldType": "file",
+              "acceptFileTypes": ".jpg,.png"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -20,
+        0
+      ],
+      "id": "11a8d69e-f411-4880-9238-6c2d556dbbb4",
+      "name": "On form submission",
+      "webhookId": "18920140-1ca3-420c-982c-4a1ba9b928b0"
+    },
+    {
+      "parameters": {
+        "content": "## PDFKit 社区节点\n\n上传图片，生成PDF",
+        "height": 300,
+        "width": 660,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "550dc29d-a757-46d6-bb83-eb4ebdf70c4c",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "PDFKit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "37daf865-0d80-41ef-aa5d-a9e99f041c5e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "5yxveU9tpHhC7307",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T16:20:56.255Z",
+      "updatedAt": "2025-06-03T16:20:56.255Z",
+      "id": "M3l9CrjShYxbin3S",
+      "name": "tips"
+    }
+  ]
+}

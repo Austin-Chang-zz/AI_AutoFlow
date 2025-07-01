@@ -1,0 +1,665 @@
+{
+  "name": "notion",
+  "nodes": [
+    {
+      "parameters": {
+        "fieldToSplitOut": "articles",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        860,
+        -100
+      ],
+      "id": "43e23c06-70ac-4131-b7fe-a389d9b43fc4",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        140,
+        160
+      ],
+      "id": "5e4e40d8-9e57-46fd-b82f-eeb8e5e2e564",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17-thinking",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        740,
+        320
+      ],
+      "id": "1012184d-c42b-45a1-a5ca-b7c1a164cb7c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C6tvtGc16y82WGvY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"title\": \"博客标题\",\n  \"content\": \"博客内容\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        980,
+        320
+      ],
+      "id": "b7355f4e-f208-4de1-bfba-0401db81f93e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        540
+      ],
+      "id": "d5ceb774-4661-4268-a938-d131ddd373ff",
+      "name": "Wait",
+      "webhookId": "45436987-1fbe-4a37-9ae0-a56210891dd4"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        -100
+      ],
+      "id": "f2df7ae4-2b72-45c5-9af5-fe3a94025aa3",
+      "name": "定时执行"
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "artificial+intelligence"
+            },
+            {
+              "name": "lang",
+              "value": "en"
+            },
+            {
+              "name": "pageSize",
+              "value": "5"
+            },
+            {
+              "name": "apikey",
+              "value": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        380,
+        -100
+      ],
+      "id": "42795d83-75e2-4db3-b116-dde7f09e0afa",
+      "name": "获取AI新闻"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer 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\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $json.title }}\",\n  \"search_depth\": \"advanced\", \n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"max_results\": 5 \n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        160
+      ],
+      "id": "1c4ff250-d8c6-47d1-8e95-fd5f9bfbbb38",
+      "name": "搜索资料"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "按照要求生成文章",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=你是一位资深的博客写手，擅长将新闻内容转化为引人入胜、具有原创性的文章。你拥有独到的视角，能够对新闻事件进行深入剖析，撰写完全原创、不抄袭的博文。\n\n请根据以下5篇新闻内容，撰写一篇800~1000字的，中文原创博客文章：\n    -标题#1：{{ $json.results[0].title }}\n    -内容#1：{{ $json.results[0].content }}\n\n    -标题#2：{{ $json.results[1].title }}\n    -内容#2：{{ $json.results[1].content }}\n\n    -标题#3：{{ $json.results[2].title }}\n    -内容#3：{{ $json.results[2].content }}\n\n    -标题#4：{{ $json.results[3].title }}\n    -内容#4：{{ $json.results[3].content }}\n\n    -标题#5：{{ $json.results[4].title }}\n    -内容#5：{{ $json.results[4].content }}\n\n写作要求如下：\n    -创作一个独特、有吸引力的标题\n    -正文共 5 段文字，每段用 <p> 标签包裹，结构清晰\n    -内容必须完全原创，不可照搬原文中的句子或短语\n    -融入你自己的分析、观点与思考\n    -结尾需有一个富有思考性的总结段落\n    -以格式规范的 JSON 输出结果，不要使用反引号\n\n最终结果返回一个合法的JSON，且仅包含 title 和 content 两个字段：  \n{\n  \"title\": \"博客标题\",\n  \"content\": \"博客内容\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        760,
+        160
+      ],
+      "id": "216ce51a-bd73-40d9-8c25-43dbe185b62b",
+      "name": "生成文章"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "=生成一张专业的插图，主题为：{{ $json.output.title }}。\n\n插图应在视觉上，展现以下内容的核心主题与氛围：{{ $json.output.content }}。\n\n请确保画面具有专业性，并符合文章的整体风格与情感基调。",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1080,
+        160
+      ],
+      "id": "f6b77970-a3a4-4822-a772-240b7727bc58",
+      "name": "生成图片",
+      "credentials": {
+        "openAiApi": {
+          "id": "LbcCT4L4wC673ixO",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        280
+      ],
+      "id": "1243ecd0-4ed0-44e0-9ec2-5ef2e31d9f26",
+      "name": "编辑图片"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gcbpckvz.ap-northeast-1.clawcloudrun.com/wp-json/wp/v2/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "image/jpeg"
+            },
+            {
+              "name": "Content-Disposition",
+              "value": "attachment; filename=image.png"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        380,
+        540
+      ],
+      "id": "aa323173-9764-4b3e-a5ed-d7a446c17f89",
+      "name": "上传图片",
+      "credentials": {
+        "wordpressApi": {
+          "id": "l85lvcoi90ckLs0j",
+          "name": "Wordpress account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://gcbpckvz.ap-northeast-1.clawcloudrun.com/wp-json/wp/v2/media/{{ $json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $('生成文章').item.json.output.title }}"
+            },
+            {
+              "name": "alt_text",
+              "value": "={{ $('生成文章').item.json.output.title }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('生成文章').item.json.output.title }}"
+            },
+            {
+              "name": "description",
+              "value": "=这是一张用在下面这篇文章中的特色图片：\n{{ $('生成文章').item.json.output.title }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        540
+      ],
+      "id": "dbda5e8f-915c-401b-9a7a-b7881fcb002b",
+      "name": "设置图片信息",
+      "credentials": {
+        "wordpressApi": {
+          "id": "l85lvcoi90ckLs0j",
+          "name": "Wordpress account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 定时获取AI新闻",
+        "height": 260,
+        "width": 1340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        -200
+      ],
+      "typeVersion": 1,
+      "id": "0bc37e26-4a48-4bcc-9b67-ac2f32488cd5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 生成文章、图片",
+        "height": 340,
+        "width": 1340,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        100
+      ],
+      "typeVersion": 1,
+      "id": "6182badb-a978-4ae2-8f46-6b45222352a5",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 上传文章、图片\n**发布到个人博客**",
+        "height": 240,
+        "width": 1340,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        500
+      ],
+      "typeVersion": 1,
+      "id": "d62fa93b-da59-4ee4-9c0f-c889b5818b82",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gcbpckvz.ap-northeast-1.clawcloudrun.com/wp-json/wp/v2/posts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $('生成文章').item.json.output.title }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $('生成文章').item.json.output.content }}"
+            },
+            {
+              "name": "status",
+              "value": "=publish"
+            },
+            {
+              "name": "featured_media",
+              "value": "={{ $('上传图片').item.json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        540
+      ],
+      "id": "967b18f1-d489-434c-a91a-0ef9b230deb6",
+      "name": "发布文章",
+      "credentials": {
+        "wordpressApi": {
+          "id": "l85lvcoi90ckLs0j",
+          "name": "Wordpress account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 自动运营个人网站\n\n### 执行步骤\n- 定时查询AI相关的新闻\n- 根据查询到的新闻，生成图片和文章\n- 将文章和图片，上传到个人博客网站\n\n\n### 资源\n- NewsAPI\n- tavily\n- gemini\n- wordpress",
+        "height": 420,
+        "width": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -420,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "718e102c-dc07-41e1-9382-6d255844a476",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dda1c0a1-c44b-40d9-bc41-e6c30726f446",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        360,
+        260
+      ],
+      "id": "95bfa522-e174-4734-b4b6-77eefe153b20",
+      "name": "筛选字段"
+    }
+  ],
+  "pinData": {
+    "搜索资料": [
+      {
+        "json": {
+          "query": "Everything Google Announced at I/O 2025",
+          "follow_up_questions": null,
+          "answer": "Google I/O 2025 focused on AI advancements, including updates to Gemini, Android, and search. No new hardware was announced. Major updates included real-time video generation and AI shopping agents.",
+          "images": [],
+          "results": [
+            {
+              "url": "https://www.wired.com/story/everything-google-announced-at-io-2025/",
+              "title": "Everything Google Announced at I/O 2025 - WIRED",
+              "content": "Close\n\n[Boone Ashworth](https://www.wired.com/author/boone-ashworth/)\n\n[Gear](https://www.wired.com/category/gear)\n\nMay 20, 2025 4:37 PM\n\nEverything Google Announced at I/O 2025\n=======================================\n\nArtificial intelligence is now in everything Google touches, including its Android XR mixed-reality glasses, a revamped search experience, and Gemini’s new agentic capabilities. [...] Google just held its big [I/O](https://www.wired.com/tag/io/) developer shindig and product announcement event today in California. As it has for the past couple years, Google continued to go all in on AI. In an I/O keynote address, Google executives announced new AI features coming to absolutely everything. It’s in Android, Search, Gemini, and—sooner or later—a pair of Google’s smart glasses. [...] .png?q=N4IghgLhBOD6BmB7aB3M0AmBLAdgcxAC5gBfAGhAFsBTCMDSMI0iiLS3A48kAV2gA2AZ2Y9IMWGAAOU6jgyiKUsHmqwYYAMbUiAbVBDE-bURAALKFKGEA9DZQOAdCizRqGR5sSUbQiMgBPG2oAN2poAIgzTgBaPEREPAFqGLAcHCMcbQxUiBisRBiAJgAGIoBWGxAKN3hwt2hTavAoOCRUdGx8URIAXQpNXj9vWBo6RRBNASw5CHV2HUIQUoqYkoA2NYBmABUARj3CPfLCUscADgBOEoAtZuVVeYhk0wBRMIiozgACAHEEpLUb4AQXSmWy30g3wAkjYAPLfFblb4AH2+AHVoQAlV4AEWaWCwCiWhIwewA7AAWK6Uy5bUpXEqaeAECihWbqAKyUzsKRuIRCAo4ZqDYY0OBE0xeeRyMB+WDUXgAKwwlE05PKW1gLjcCgGRKkeyliBlODlc0VKrVGq2IoNRVMOvcIBIQA)",
+              "score": 0.9564761,
+              "raw_content": null
+            },
+            {
+              "url": "https://www.youtube.com/watch?v=j__YHSjgYSE",
+              "title": "EVERYTHING Announced at Google IO 2025 Summarized in 10 ...",
+              "content": "### Description\n10968 views\nPosted: 23 May 2025\nIn just 10 minutes, we’ve summarized all the biggest announcements from Google I/O 2025 — including revolutionary AI tools, Android 15 updates, game-changing Pixel devices, and major shifts in search and cloud computing. Whether you're a developer, tech enthusiast, or just want to stay ahead, this video delivers all the key highlights in one shot. [...] Google just replaced product launches with AI breakthroughs. At IO 2025, not a single phone, tablet, or hardware device was announced. Instead, every second of the keynote was focused on artificial intelligence, realtime video generation with sound, 3D calls without glasses, AI agents that shop for you, and models that can think in parallel. Over 1.5 billion users are already seeing AI powered results in search alone. In this video, you'll get a clear fact-based breakdown of every major [...] From Google Gemini’s shocking upgrades to new generative AI integrations across Workspace, Maps, and Chrome, you’ll see why this year’s I/O event left everyone stunned. We also cover new features in Android, smart home tech, and the future of Google Search powered by AI-first strategies.\n\nGet the full story fast—no filler, just the most important news from Google I/O 2025 and what it all means for the future of technology.",
+              "score": 0.9372167,
+              "raw_content": null
+            },
+            {
+              "url": "https://www.reddit.com/r/Android/comments/1krsb4t/everything_google_announced_at_io_2025_gemini/",
+              "title": "Everything Google announced at I/O 2025: Gemini, Android, more",
+              "content": "Google I/O 2025 Was a Mind-Blowing Showcase of Innovation: From Gemini 2.5 and Project Astra to Imagen 4, Android XR, and Google Beam, It Felt",
+              "score": 0.9125066,
+              "raw_content": null
+            },
+            {
+              "url": "https://techcrunch.com/2025/05/20/google-i-o-2025-everything-announced-at-this-years-developer-conference/",
+              "title": "Google I/O 2025: Everything announced at this year's developer ...",
+              "content": ".com/shareArticle?url=https%3A%2F%2Ftechcrunch.com%2F2025%2F05%2F20%2Fgoogle-i-o-2025-everything-announced-at-this-years-developer-conference%2F&title=Google+I%2FO+2025%3A+Everything+announced+at+this+year%E2%80%99s+developer+conference&summary=We%27ve+got+plenty+of+news+relating+to+Android%2C+Chrome%2C+Google+Search%2C+YouTube%2C+and+%E2%80%94+of+course+%E2%80%94+Google%27s+AI-powered+chatbot%2C+Gemini.&mini=1&source=TechCrunch)[](https://www.reddit.com/submit?url=https%3A%2F%2Ftechcrunch [...] .com/shareArticle?url=https%3A%2F%2Ftechcrunch.com%2F2025%2F05%2F20%2Fgoogle-i-o-2025-everything-announced-at-this-years-developer-conference%2F&title=Google+I%2FO+2025%3A+Everything+announced+at+this+year%E2%80%99s+developer+conference&summary=We%27ve+got+plenty+of+news+relating+to+Android%2C+Chrome%2C+Google+Search%2C+YouTube%2C+and+%E2%80%94+of+course+%E2%80%94+Google%27s+AI-powered+chatbot%2C+Gemini.&mini=1&source=TechCrunch)[](https://www.reddit.com/submit?url=https%3A%2F%2Ftechcrunch [...] .com/shareArticle?url=https%3A%2F%2Ftechcrunch.com%2F2025%2F05%2F20%2Fgoogle-i-o-2025-everything-announced-at-this-years-developer-conference%2F&title=Google+I%2FO+2025%3A+Everything+announced+at+this+year%E2%80%99s+developer+conference&summary=We%27ve+got+plenty+of+news+relating+to+Android%2C+Chrome%2C+Google+Search%2C+YouTube%2C+and+%E2%80%94+of+course+%E2%80%94+Google%27s+AI-powered+chatbot%2C+Gemini.&mini=1&source=TechCrunch)[](https://www.reddit.com/submit?url=https%3A%2F%2Ftechcrunch",
+              "score": 0.898277,
+              "raw_content": null
+            },
+            {
+              "url": "https://www.reddit.com/r/stocks/comments/1krh4lf/the_15_biggest_announcements_at_google_io_2025/",
+              "title": "The 15 biggest announcements at Google I/O 2025 : r/stocks - Reddit",
+              "content": "[https://www.theverge.com/news/669408/google-io-2025-biggest-announcements-ai-gemini](https://www.theverge.com/news/669408/google-io-2025-biggest-announcements-ai-gemini)\n\n> Google just wrapped up its big keynote at I/O 2025. As expected, it was full of AI-related announcements, ranging from updates across Google’s image and video generation models to new features in Search and Gmail. But there were some surprises, too, like a new AI filmmaking app and an update to Project Starline.",
+              "score": 0.8783249,
+              "raw_content": null
+            }
+          ],
+          "response_time": 1.39
+        }
+      }
+    ],
+    "生成文章": [
+      {
+        "json": {
+          "output": {
+            "title": "标题",
+            "content": "内容"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "筛选字段",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "生成文章",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "生成文章",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "定时执行": {
+      "main": [
+        [
+          {
+            "node": "获取AI新闻",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "获取AI新闻": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "搜索资料": {
+      "main": [
+        [
+          {
+            "node": "生成文章",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "生成文章": {
+      "main": [
+        [
+          {
+            "node": "生成图片",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "生成图片": {
+      "main": [
+        [
+          {
+            "node": "编辑图片",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "编辑图片": {
+      "main": [
+        [
+          {
+            "node": "上传图片",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "上传图片": {
+      "main": [
+        [
+          {
+            "node": "设置图片信息",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "设置图片信息": {
+      "main": [
+        [
+          {
+            "node": "发布文章",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "发布文章": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "筛选字段": {
+      "main": [
+        [
+          {
+            "node": "搜索资料",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d85edea8-7b48-43c7-93c8-9b7a12631d8e",
+  "meta": {
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "hbAv1579WqM4Hkmd",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T16:20:56.255Z",
+      "updatedAt": "2025-06-03T16:20:56.255Z",
+      "id": "M3l9CrjShYxbin3S",
+      "name": "tips"
+    }
+  ]
+}
