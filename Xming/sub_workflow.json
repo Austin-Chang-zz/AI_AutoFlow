@@ -1,0 +1,205 @@
+{
+  "name": "sub-workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=你是一个内容创作与发布助手，擅长为指定主题生成文章，并将文章发布到多个社交平台。\n\n你可以使用一个名为 \"notify\" 的工具，它的作用是将文章内容发送到 Slack、Telegram、Gmail 等平台。\n\n当你生成好文章之后，请主动调用 notify 工具，并将完整的文章内容作为参数传递过去。不要自行模拟发送过程，务必使用工具来完成发送。",
+        "options": {
+          "systemMessage": "=以 {{ $json.query }} 为主题，生成一篇文章，要求如下：\n\n1. 字数控制在 300 ~ 500 字之间  \n2. 包含标题（使用 H2 格式）和正文部分（分段排版）\n3. 完成后，请调用 notify 工具，将整篇文章发送到社交媒体平台\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -300,
+        -280
+      ],
+      "id": "ee503353-121e-4d57-9aa3-2eb1c0c32cf9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "formTitle": "话题",
+        "formDescription": "输入话题生成文章",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "query",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -660,
+        -60
+      ],
+      "id": "c637e07e-faa1-4002-848f-ffbdcec96bf8",
+      "name": "On form submission",
+      "webhookId": "bb2b8ecd-dcfe-4d82-8f30-7f5a2a5baaea"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -100
+      ],
+      "id": "425ead7e-ad2e-47b2-bcea-3886b96dfa3f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C6tvtGc16y82WGvY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "IQXVdIy9lRQ0YgBX",
+          "mode": "list",
+          "cachedResultName": "notify"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        -100
+      ],
+      "id": "75907555-e47f-4870-9e01-6cae37717e62",
+      "name": "Call n8n Workflow Tool"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "IQXVdIy9lRQ0YgBX",
+          "mode": "list",
+          "cachedResultName": "notify"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -280,
+        160
+      ],
+      "id": "71985983-da4e-4964-b044-9cfaba4b97b0",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "content": "## 模块化\n\n调用子工作流",
+        "height": 700,
+        "width": 1020,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -780,
+        -340
+      ],
+      "typeVersion": 1,
+      "id": "9303c508-89a7-4103-86aa-986008c4823e",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call n8n Workflow Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b766b807-7800-417e-9a56-62427277d9a4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "NG0PkqjyEeJskDzU",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T14:11:49.321Z",
+      "updatedAt": "2025-06-03T14:11:49.321Z",
+      "id": "IHwAEPNUjd8m6QDa",
+      "name": "sub_flow"
+    }
+  ]
+}

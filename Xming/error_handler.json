@@ -1,0 +1,226 @@
+{
+  "name": "error-handler",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -140
+      ],
+      "id": "9fadb7b3-4649-490b-a79a-893686ae8180",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "sendTo": "",
+        "subject": "error",
+        "emailType": "text",
+        "message": "=工作流 →\n{{ $json.workflow.name }}\n\n节点信息 →\n{{ $json.execution.lastNodeExecuted }}\n\n报错信息 →\n{{ $json.execution.error.message }}\n\n详细信息 →\n{{ $json.execution.error.stack }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -240,
+        -140
+      ],
+      "id": "879f9ded-cb6c-4858-a38b-c763e11b772e",
+      "name": "Gmail",
+      "webhookId": "806b7cc0-035f-49ab-8c37-ee6cdd52c48c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BxkpbmrA3eK1w5LJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C090CRD8V4Y",
+          "mode": "list",
+          "cachedResultName": "所有-ai-stuff"
+        },
+        "text": "=工作流 →\n{{ $json.workflow.name }}\n\n节点信息 →\n{{ $json.execution.lastNodeExecuted }}\n\n报错信息 →\n{{ $json.execution.error.message }}\n\n详细信息 →\n{{ $json.execution.error.stack }}\n",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -240,
+        -340
+      ],
+      "id": "d9a5b4d6-9188-4a01-87ab-a37b2b35bd56",
+      "name": "Slack",
+      "webhookId": "b343b62e-20ee-4e42-9207-0ce18361b7a2",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "tfyBwuGEw1wN6hpg",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1j9mmmsP8rDVVJFlaKHhk4STKx9CKWhbq2qmQnf92R_w",
+          "mode": "list",
+          "cachedResultName": "n8n-error-log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1j9mmmsP8rDVVJFlaKHhk4STKx9CKWhbq2qmQnf92R_w/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1j9mmmsP8rDVVJFlaKHhk4STKx9CKWhbq2qmQnf92R_w/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow": "={{ $json.workflow.name }}",
+            "node": "={{ $json.execution.lastNodeExecuted }}",
+            "error": "={{ $json.execution.error.message }}",
+            "stack": "={{ $json.execution.error.stack }}",
+            "timestamp": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow",
+              "displayName": "workflow",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "node",
+              "displayName": "node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "error",
+              "displayName": "error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "stack",
+              "displayName": "stack",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -240,
+        80
+      ],
+      "id": "c85f0fa6-dd4e-4689-84a4-91cfca964f57",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bB5yWZ7H611nnPK6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 错误处理工作流\n- 发送邮件通知\n- 发送slack通知\n- 记录错误日志",
+        "height": 640,
+        "width": 960,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -760,
+        -380
+      ],
+      "typeVersion": 1,
+      "id": "8a083800-38a3-4269-b7ec-b72f464053d6",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "78a74923-05ee-434e-9b84-34bd1ce0e336",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "eNrNo8E9eaZBPMai",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T14:10:49.881Z",
+      "updatedAt": "2025-06-03T14:10:49.881Z",
+      "id": "IJZ7COWVGX0TGtYe",
+      "name": "error"
+    }
+  ]
+}

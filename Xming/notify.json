@@ -1,0 +1,151 @@
+{
+  "name": "notify",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "",
+        "subject": "message",
+        "emailType": "text",
+        "message": "={{ $json.query }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        520,
+        240
+      ],
+      "id": "15f0da7c-9797-40b1-8461-2a2fc4b4e827",
+      "name": "Gmail",
+      "webhookId": "806b7cc0-035f-49ab-8c37-ee6cdd52c48c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BxkpbmrA3eK1w5LJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C090CRD8V4Y",
+          "mode": "list",
+          "cachedResultName": "所有-ai-stuff"
+        },
+        "text": "={{ $json.query }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        520,
+        40
+      ],
+      "id": "33fecd8d-d9ed-488d-a937-f5d9ca36a638",
+      "name": "Slack",
+      "webhookId": "b343b62e-20ee-4e42-9207-0ce18361b7a2",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "tfyBwuGEw1wN6hpg",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 子工作流\n- 发送邮件通知\n- 发送slack通知\n- 发送telegram通知",
+        "height": 640,
+        "width": 960,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "2e663acd-fa43-4c1b-a73c-f30b27f51ce1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "chatId": "",
+        "text": "={{ $json.query }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        520,
+        440
+      ],
+      "id": "7ac2cb2b-0c52-4b5f-ad4b-4620cab08001",
+      "name": "Telegram",
+      "webhookId": "02a0f9a9-8efc-4a43-99ff-69e739de8253",
+      "credentials": {
+        "telegramApi": {
+          "id": "I5lDgMHkDlu4Q7K2",
+          "name": "Telegram account rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        240
+      ],
+      "id": "f33a38c0-5b56-4768-b6b8-39eb263d142d",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ef400d25-4015-46ca-8e70-96c90570d63c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "842e089ebeca6cebf71676a6a2ba2cddf5a9039b264a25f6a7ee9230b3376b1b"
+  },
+  "id": "IQXVdIy9lRQ0YgBX",
+  "tags": [
+    {
+      "createdAt": "2025-06-03T14:11:49.321Z",
+      "updatedAt": "2025-06-03T14:11:49.321Z",
+      "id": "IHwAEPNUjd8m6QDa",
+      "name": "sub_flow"
+    }
+  ]
+}
