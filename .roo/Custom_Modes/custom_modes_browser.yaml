@@ -1,0 +1,15 @@
+# This file is self-made and exported from Roo's custom modes configuration.
+customModes:
+  - slug: browser
+    name: browser
+    description: Browse the local and internet URL
+    roleDefinition: browse the local URL and related code for bug correction. Or use Chrome to browse the user provided URL and excute user's command or needs.
+    whenToUse: Debug the local URL code or excute the command by Chrome
+    customInstructions: Automatically generate summaries of long articles or documents on the web.
+    groups:
+      - read
+      - edit
+      - browser
+      - command
+      - mcp
+    source: global
