@@ -1,0 +1,37 @@
+{
+    "mcpServers": {
+        "github": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-github"
+            ],
+            "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+            }
+        },
+        "github.com/upstash/context7-mcp": {
+            "command": "cmd",
+            "args": [
+                "/c",
+                "npx",
+                "-y",
+                "@upstash/context7-mcp@latest"
+            ],
+            "disabled": false,
+            "autoApprove": []
+        },
+        "firecrawl-mcp": {
+            "command": "npx",
+            "args": [
+                "/c",
+                "npx",
+                "-y",
+                "firecrawl-mcp"
+            ],
+            "env": {
+                "FIRECRAWL_API_KEY": "fc-aed59e84de434d8eaf559e7d0a02fb89"
+            }
+        }
+    }
+}
