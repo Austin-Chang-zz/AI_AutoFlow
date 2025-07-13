@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用戶評價 - Augment Code</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-code"></i>
+                <span>Augment Code</span>
+            </div>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link" data-i18n="nav.home">首頁</a>
+                <a href="features.html" class="nav-link" data-i18n="nav.features">功能特色</a>
+                <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">價格方案</a>
+                <a href="comparison.html" class="nav-link" data-i18n="nav.comparison">產品對比</a>
+                <a href="testimonials.html" class="nav-link active" data-i18n="nav.testimonials">用戶評價</a>
+            </div>
+            <div class="language-selector">
+                <div class="language-dropdown">
+                    <button class="language-btn" id="languageBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">中文</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-options" id="languageOptions">
+                        <div class="language-option" data-lang="zh" data-flag="🇨🇳">
+                            <span class="flag">🇨🇳</span>
+                            <span>中文</span>
+                        </div>
+                        <div class="language-option" data-lang="en" data-flag="🇺🇸">
+                            <span class="flag">🇺🇸</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="ja" data-flag="🇯🇵">
+                            <span class="flag">🇯🇵</span>
+                            <span>日本語</span>
+                        </div>
+                        <div class="language-option" data-lang="ko" data-flag="🇰🇷">
+                            <span class="flag">🇰🇷</span>
+                            <span>한국어</span>
+                        </div>
+                        <div class="language-option" data-lang="es" data-flag="🇪🇸">
+                            <span class="flag">🇪🇸</span>
+                            <span>Español</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 頁面標題 -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title" data-i18n="nav.testimonials">用戶評價</h1>
+            <p class="page-subtitle" data-i18n="sections.testimonials_subtitle">來自全球開發者的真實反饋</p>
+        </div>
+    </section>
+
+    <!-- 統計數據 -->
+    <section class="testimonial-stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">50,000+</div>
+                    <div class="stat-label">活躍開發者</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.8/5</div>
+                    <div class="stat-label">用戶評分</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">推薦率</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">300%</div>
+                    <div class="stat-label">效率提升</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用戶評價區域 -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="testimonials-grid">
+                <div class="testimonial-card featured">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"Augment Code是少數能夠真正實現AI炒作並超越它的平台。上下文引擎的質量令人印象深刻，真正理解我們的大型代碼庫。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Chintan Shah</h4>
+                            <span>VP Engineering, Collective</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"自主智能體功能讓我的開發效率提升了300%。它不僅能理解我的需求，還能自動完成複雜的編程任務。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Suchitra Hari</h4>
+                            <span>Full Stack Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"MCP集成讓我能夠連接所有我需要的工具，工作流程無縫銜接。這是其他AI編程工具無法提供的。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>An Van</h4>
+                            <span>DevOps Engineer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"代碼質量和準確性遠超其他AI編程工具。生成的代碼幾乎不需要修改就能直接用於生產環境。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Sanket D</h4>
+                            <span>Software Architect</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"終於找到了一個真正適合企業級開發的AI工具。安全性和隱私保護讓我們可以放心使用。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Lewis Popper</h4>
+                            <span>Tech Lead</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"上下文引擎的深度理解能力讓我驚嘆。它能夠理解複雜的業務邏輯並生成相應的代碼。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Rom Iluz</h4>
+                            <span>Senior Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"從GitHub Copilot轉到Augment後，我再也回不去了。功能更強大，價格更合理。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Nick Andersen</h4>
+                            <span>Frontend Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"終端集成功能太棒了！AI可以直接幫我執行命令，大大提高了開發效率。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Jitender Yadar</h4>
+                            <span>Backend Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"作為團隊負責人，我最看重的是工具的可靠性和安全性。Augment在這兩方面都表現出色。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Chris Johnson</h4>
+                            <span>Engineering Manager</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行業認可 -->
+    <section class="industry-recognition">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">行業認可</h2>
+                <p class="section-subtitle">來自權威機構和媒體的認可</p>
+            </div>
+
+            <div class="recognition-grid">
+                <div class="recognition-item">
+                    <div class="recognition-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>SWE-Bench 冠軍</h3>
+                    <p>在業界最權威的軟件工程基準測試中排名第一</p>
+                </div>
+
+                <div class="recognition-item">
+                    <div class="recognition-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3>媒體報導</h3>
+                    <p>被TechCrunch、Hacker News等知名科技媒體報導</p>
+                </div>
+
+                <div class="recognition-item">
+                    <div class="recognition-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>開發者選擇獎</h3>
+                    <p>獲得2024年度最佳AI開發工具獎</p>
+                </div>
+
+                <div class="recognition-item">
+                    <div class="recognition-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>SOC 2 認證</h3>
+                    <p>通過嚴格的安全和合規性審核</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 立即開始 -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>準備好體驗 Augment Code 了嗎？</h2>
+                <p>加入50,000+開發者的行列，體驗革命性的AI編程助手</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        免費開始
+                    </a>
+                    <a href="pricing.html" class="btn btn-secondary">
+                        <i class="fas fa-dollar-sign"></i>
+                        查看價格
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-code"></i>
+                        <span>Augment Code</span>
+                    </div>
+                    <p class="footer-description">
+                        業界領先的AI軟件開發平台，讓每一次按鍵都更有價值。
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">頁面導航</h4>
+                    <ul class="footer-links">
+                        <li><a href="home.html">首頁</a></li>
+                        <li><a href="features.html">功能特色</a></li>
+                        <li><a href="pricing.html">價格方案</a></li>
+                        <li><a href="comparison.html">產品對比</a></li>
+                        <li><a href="testimonials.html">用戶評價</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">資源</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">文檔</a></li>
+                        <li><a href="#">博客</a></li>
+                        <li><a href="#">更新日誌</a></li>
+                        <li><a href="#">狀態頁面</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">公司</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">職業機會</a></li>
+                        <li><a href="#">聯繫銷售</a></li>
+                        <li><a href="#">聯繫支持</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Augment Code. 保留所有權利。</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>功能特色 - Augment Code</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-code"></i>
+                <span>Augment Code</span>
+            </div>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link" data-i18n="nav.home">首頁</a>
+                <a href="features.html" class="nav-link active" data-i18n="nav.features">功能特色</a>
+                <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">價格方案</a>
+                <a href="comparison.html" class="nav-link" data-i18n="nav.comparison">產品對比</a>
+                <a href="testimonials.html" class="nav-link" data-i18n="nav.testimonials">用戶評價</a>
+            </div>
+            <div class="language-selector">
+                <div class="language-dropdown">
+                    <button class="language-btn" id="languageBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">中文</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-options" id="languageOptions">
+                        <div class="language-option" data-lang="zh" data-flag="🇨🇳">
+                            <span class="flag">🇨🇳</span>
+                            <span>中文</span>
+                        </div>
+                        <div class="language-option" data-lang="en" data-flag="🇺🇸">
+                            <span class="flag">🇺🇸</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="ja" data-flag="🇯🇵">
+                            <span class="flag">🇯🇵</span>
+                            <span>日本語</span>
+                        </div>
+                        <div class="language-option" data-lang="ko" data-flag="🇰🇷">
+                            <span class="flag">🇰🇷</span>
+                            <span>한국어</span>
+                        </div>
+                        <div class="language-option" data-lang="es" data-flag="🇪🇸">
+                            <span class="flag">🇪🇸</span>
+                            <span>Español</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 頁面標題 -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title" data-i18n="nav.features">功能特色</h1>
+            <p class="page-subtitle" data-i18n="sections.features_title">為軟件工程師而生的強大功能</p>
+        </div>
+    </section>
+
+    <!-- 功能特色區域 -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">從自主編程智能體到精確的代碼庫感知自動完成</h2>
+                <p class="section-subtitle">AI助力您快速完成任何項目</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card featured">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">上下文引擎</h3>
+                    <p class="feature-description">尖端檢索技術理解您的代碼庫——無論大小。我們的專有上下文引擎能夠深度分析您的整個項目，提供精準的代碼建議和智能補全。</p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>實時代碼庫索引</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>智能語義理解</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>跨文件關聯分析</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card featured">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">自主智能體</h3>
+                    <p class="feature-description">本地或遠程智能體端到端完成任務，可以規劃、構建並為您開啟PR。智能體能夠理解複雜的開發任務並自動執行。</p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>任務自動規劃</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>代碼自動生成</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>PR自動創建</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="feature-title">智能應用</h3>
+                    <p class="feature-description">一鍵智能應用聊天建議到您的代碼。通過自然語言對話，獲得精確的代碼修改建議。</p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>自然語言交互</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>智能代碼重構</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3 class="feature-title">終端集成</h3>
+                    <p class="feature-description">智能體可以在您的終端中運行命令——需要批准或自動運行，就像真正的開發夥伴一樣工作。</p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>命令自動執行</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>安全權限控制</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="feature-title">MCP支持</h3>
+                    <p class="feature-description">引入額外上下文並與100+外部工具協作。無縫集成您現有的開發工具鏈。</p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>100+工具集成</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>自定義工具支持</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">安全隱私</h3>
+                    <p class="feature-description">您的代碼默認安全且私密。企業級安全保障，符合SOC 2 Type II標準。</p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>SOC 2 Type II認證</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check"></i>
+                            <span>數據本地處理</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h3 class="feature-title">圖像支持</h3>
+                    <p class="feature-description">添加截圖和線框圖以包含額外上下文。視覺化需求轉化為精確代碼。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="feature-title">智能應用</h3>
+                    <p class="feature-description">從聊天中智能應用建議到您的代碼，一鍵完成複雜的代碼修改。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <h3 class="feature-title">記憶與規則</h3>
+                    <p class="feature-description">使用您的最佳實踐和偏好自定義Augment，讓AI學習您的編程風格。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IDE支持區域 -->
+    <section class="ide-support">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">支持您喜愛的IDE</h2>
+                <p class="section-subtitle">在您熟悉的開發環境中無縫工作</p>
+            </div>
+
+            <div class="ide-grid">
+                <div class="ide-card">
+                    <div class="ide-icon">
+                        <i class="fab fa-microsoft"></i>
+                    </div>
+                    <h3>Visual Studio Code</h3>
+                    <p>完整功能支持</p>
+                </div>
+
+                <div class="ide-card">
+                    <div class="ide-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>JetBrains IDEs</h3>
+                    <p>IntelliJ, PyCharm, WebStorm等</p>
+                </div>
+
+                <div class="ide-card">
+                    <div class="ide-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3>Vim & Neovim</h3>
+                    <p>命令行編輯器支持</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-code"></i>
+                        <span>Augment Code</span>
+                    </div>
+                    <p class="footer-description">
+                        業界領先的AI軟件開發平台，讓每一次按鍵都更有價值。
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">頁面導航</h4>
+                    <ul class="footer-links">
+                        <li><a href="home.html">首頁</a></li>
+                        <li><a href="features.html">功能特色</a></li>
+                        <li><a href="pricing.html">價格方案</a></li>
+                        <li><a href="comparison.html">產品對比</a></li>
+                        <li><a href="testimonials.html">用戶評價</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">資源</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">文檔</a></li>
+                        <li><a href="#">博客</a></li>
+                        <li><a href="#">更新日誌</a></li>
+                        <li><a href="#">狀態頁面</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">公司</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">職業機會</a></li>
+                        <li><a href="#">聯繫銷售</a></li>
+                        <li><a href="#">聯繫支持</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Augment Code. 保留所有權利。</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多語言測試 - Augment Code</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-code"></i>
+                <span>Augment Code</span>
+            </div>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link" data-i18n="nav.home">首頁</a>
+                <a href="features.html" class="nav-link" data-i18n="nav.features">功能特色</a>
+                <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">價格方案</a>
+                <a href="comparison.html" class="nav-link" data-i18n="nav.comparison">產品對比</a>
+                <a href="testimonials.html" class="nav-link" data-i18n="nav.testimonials">用戶評價</a>
+            </div>
+            <div class="language-selector">
+                <div class="language-dropdown">
+                    <button class="language-btn" id="languageBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">中文</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-options" id="languageOptions">
+                        <div class="language-option" data-lang="zh" data-flag="🇨🇳">
+                            <span class="flag">🇨🇳</span>
+                            <span>中文</span>
+                        </div>
+                        <div class="language-option" data-lang="en" data-flag="🇺🇸">
+                            <span class="flag">🇺🇸</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="ja" data-flag="🇯🇵">
+                            <span class="flag">🇯🇵</span>
+                            <span>日本語</span>
+                        </div>
+                        <div class="language-option" data-lang="ko" data-flag="🇰🇷">
+                            <span class="flag">🇰🇷</span>
+                            <span>한국어</span>
+                        </div>
+                        <div class="language-option" data-lang="es" data-flag="🇪🇸">
+                            <span class="flag">🇪🇸</span>
+                            <span>Español</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 測試區域 -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">多語言功能測試</h1>
+            <p class="page-subtitle">測試所有翻譯是否正常工作</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-i18n="sections.explore">探索 Augment Code</h2>
+                <p class="section-subtitle" data-i18n="sections.explore_subtitle">了解為什麼全球50,000+開發者選擇我們</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title" data-i18n="features.context_engine">上下文引擎</h3>
+                    <p class="feature-description" data-i18n="features.context_desc">業界領先的上下文引擎和自主智能體</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title" data-i18n="features.autonomous_agent">自主智能體</h3>
+                    <p class="feature-description" data-i18n="features.agent_desc">本地或遠程智能體端到端完成任務，可以規劃、構建並為您開啟PR</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3 class="feature-title" data-i18n="features.terminal_integration">終端集成</h3>
+                    <p class="feature-description" data-i18n="features.terminal_desc">智能體可以在您的終端中運行命令——需要批准或自動運行</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem; text-align: center;">
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        <span data-i18n="buttons.install">立即安裝</span>
+                    </a>
+                    <a href="#" class="btn btn-secondary">
+                        <i class="fas fa-play"></i>
+                        <span data-i18n="buttons.learn_more">了解更多</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem;">
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label" data-i18n="stats.developers">開發者信賴</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">SWE-Bench</span>
+                        <span class="stat-label" data-i18n="stats.champion">冠軍</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">14天</span>
+                        <span class="stat-label" data-i18n="stats.trial">免費試用</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 測試結果顯示 -->
+    <section style="padding: 3rem 0; background: #111;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">測試狀態</h2>
+                <div id="testResults" style="margin-top: 2rem; color: #ccc;">
+                    <p>正在檢測多語言功能...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="i18n.js"></script>
+    <script>
+        // 測試多語言功能
+        document.addEventListener('DOMContentLoaded', () => {
+            const testResults = document.getElementById('testResults');
+            
+            // 等待語言管理器初始化
+            setTimeout(() => {
+                const results = [];
+                
+                // 測試翻譯是否存在
+                const testKeys = [
+                    'nav.home',
+                    'hero.title1', 
+                    'buttons.install',
+                    'stats.developers',
+                    'features.context_engine'
+                ];
+                
+                const languages = ['zh', 'en', 'ja', 'ko', 'es'];
+                
+                languages.forEach(lang => {
+                    const missing = [];
+                    testKeys.forEach(key => {
+                        const translation = getTranslationForLang(lang, key);
+                        if (!translation) {
+                            missing.push(key);
+                        }
+                    });
+                    
+                    if (missing.length === 0) {
+                        results.push(`✅ ${lang}: 所有測試翻譯都存在`);
+                    } else {
+                        results.push(`❌ ${lang}: 缺少翻譯 - ${missing.join(', ')}`);
+                    }
+                });
+                
+                // 測試語言切換功能
+                if (typeof languageManager !== 'undefined') {
+                    results.push('✅ 語言管理器已初始化');
+                    results.push(`✅ 當前語言: ${languageManager.getCurrentLanguage()}`);
+                } else {
+                    results.push('❌ 語言管理器未初始化');
+                }
+                
+                testResults.innerHTML = results.map(result => `<p>${result}</p>`).join('');
+            }, 1000);
+        });
+        
+        function getTranslationForLang(lang, key) {
+            const keys = key.split('.');
+            let translation = translations[lang];
+            
+            for (const k of keys) {
+                if (translation && translation[k]) {
+                    translation = translation[k];
+                } else {
+                    return null;
+                }
+            }
+            
+            return translation;
+        }
+    </script>
+</body>
+</html>

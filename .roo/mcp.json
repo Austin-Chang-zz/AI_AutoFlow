@@ -24,14 +24,30 @@
         "firecrawl-mcp": {
             "command": "npx",
             "args": [
-                "/c",
-                "npx",
                 "-y",
                 "firecrawl-mcp"
             ],
             "env": {
                 "FIRECRAWL_API_KEY": "fc-aed59e84de434d8eaf559e7d0a02fb89"
             }
+        },
+        "playwright-mcp": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@playwright/mcp"
+            ],
+            "disabled": false,
+            "autoApprove": []
+        },
+        "mcp-feedback-collector": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "mcp-feedback-collector"
+            ],
+            "disabled": false,
+            "autoApprove": []
         }
     }
 }

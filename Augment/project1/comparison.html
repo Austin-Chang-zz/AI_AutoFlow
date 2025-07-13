@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品對比 - Augment Code</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-code"></i>
+                <span>Augment Code</span>
+            </div>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-link" data-i18n="nav.home">首頁</a>
+                <a href="features.html" class="nav-link" data-i18n="nav.features">功能特色</a>
+                <a href="pricing.html" class="nav-link" data-i18n="nav.pricing">價格方案</a>
+                <a href="comparison.html" class="nav-link active" data-i18n="nav.comparison">產品對比</a>
+                <a href="testimonials.html" class="nav-link" data-i18n="nav.testimonials">用戶評價</a>
+            </div>
+            <div class="language-selector">
+                <div class="language-dropdown">
+                    <button class="language-btn" id="languageBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">中文</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-options" id="languageOptions">
+                        <div class="language-option" data-lang="zh" data-flag="🇨🇳">
+                            <span class="flag">🇨🇳</span>
+                            <span>中文</span>
+                        </div>
+                        <div class="language-option" data-lang="en" data-flag="🇺🇸">
+                            <span class="flag">🇺🇸</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="ja" data-flag="🇯🇵">
+                            <span class="flag">🇯🇵</span>
+                            <span>日本語</span>
+                        </div>
+                        <div class="language-option" data-lang="ko" data-flag="🇰🇷">
+                            <span class="flag">🇰🇷</span>
+                            <span>한국어</span>
+                        </div>
+                        <div class="language-option" data-lang="es" data-flag="🇪🇸">
+                            <span class="flag">🇪🇸</span>
+                            <span>Español</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 頁面標題 -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title" data-i18n="nav.comparison">產品對比</h1>
+            <p class="page-subtitle" data-i18n="sections.comparison_subtitle">了解為什麼Augment Code是最佳選擇</p>
+        </div>
+    </section>
+
+    <!-- 產品對比區域 -->
+    <section class="comparison">
+        <div class="container">
+            <div class="comparison-table">
+                <div class="comparison-header">
+                    <div class="feature-column">功能</div>
+                    <div class="product-column augment">
+                        <div class="product-logo">
+                            <i class="fas fa-code"></i>
+                            <span>Augment Code</span>
+                        </div>
+                    </div>
+                    <div class="product-column">
+                        <div class="product-logo">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub Copilot</span>
+                        </div>
+                    </div>
+                    <div class="product-column">
+                        <div class="product-logo">
+                            <i class="fas fa-mouse-pointer"></i>
+                            <span>Cursor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">上下文引擎</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> 業界領先</div>
+                    <div class="feature-value"><i class="fas fa-times"></i> 基礎</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 良好</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">自主智能體</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> 完整支持</div>
+                    <div class="feature-value"><i class="fas fa-times"></i> 無</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 基礎</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">MCP集成</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> 100+ 工具</div>
+                    <div class="feature-value"><i class="fas fa-times"></i> 無</div>
+                    <div class="feature-value"><i class="fas fa-times"></i> 無</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">終端集成</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> 完整</div>
+                    <div class="feature-value"><i class="fas fa-times"></i> 無</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 基礎</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">SWE-Bench排名</div>
+                    <div class="feature-value augment"><i class="fas fa-trophy"></i> #1</div>
+                    <div class="feature-value">#3</div>
+                    <div class="feature-value">#2</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">起始價格</div>
+                    <div class="feature-value augment">免費</div>
+                    <div class="feature-value">$10/月</div>
+                    <div class="feature-value">$20/月</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">代碼庫理解</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> 深度理解</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 基礎</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 良好</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">多語言支持</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> 全面</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 良好</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 良好</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">企業安全</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> SOC 2 Type II</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 基礎</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 基礎</div>
+                </div>
+
+                <div class="comparison-row">
+                    <div class="feature-name">IDE支持</div>
+                    <div class="feature-value augment"><i class="fas fa-check"></i> VS Code, JetBrains, Vim</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> VS Code, JetBrains</div>
+                    <div class="feature-value"><i class="fas fa-check"></i> 專用編輯器</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 詳細對比區域 -->
+    <section class="detailed-comparison">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">詳細功能對比</h2>
+                <p class="section-subtitle">深入了解各項功能的差異</p>
+            </div>
+
+            <div class="comparison-cards">
+                <div class="comparison-card">
+                    <div class="card-header">
+                        <h3>上下文引擎</h3>
+                        <div class="winner-badge">Augment 領先</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="product-comparison">
+                            <div class="product-item winner">
+                                <h4><i class="fas fa-code"></i> Augment Code</h4>
+                                <ul>
+                                    <li>實時代碼庫索引</li>
+                                    <li>深度語義理解</li>
+                                    <li>跨文件關聯分析</li>
+                                    <li>大型項目優化</li>
+                                </ul>
+                            </div>
+                            <div class="product-item">
+                                <h4><i class="fab fa-github"></i> GitHub Copilot</h4>
+                                <ul>
+                                    <li>基礎文件理解</li>
+                                    <li>有限上下文窗口</li>
+                                    <li>單文件焦點</li>
+                                </ul>
+                            </div>
+                            <div class="product-item">
+                                <h4><i class="fas fa-mouse-pointer"></i> Cursor</h4>
+                                <ul>
+                                    <li>良好的文件理解</li>
+                                    <li>中等上下文窗口</li>
+                                    <li>部分跨文件支持</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <div class="card-header">
+                        <h3>自主智能體</h3>
+                        <div class="winner-badge">Augment 獨有</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="product-comparison">
+                            <div class="product-item winner">
+                                <h4><i class="fas fa-code"></i> Augment Code</h4>
+                                <ul>
+                                    <li>完整任務規劃</li>
+                                    <li>自動代碼生成</li>
+                                    <li>PR自動創建</li>
+                                    <li>本地/遠程執行</li>
+                                </ul>
+                            </div>
+                            <div class="product-item">
+                                <h4><i class="fab fa-github"></i> GitHub Copilot</h4>
+                                <ul>
+                                    <li>無智能體功能</li>
+                                    <li>僅代碼補全</li>
+                                </ul>
+                            </div>
+                            <div class="product-item">
+                                <h4><i class="fas fa-mouse-pointer"></i> Cursor</h4>
+                                <ul>
+                                    <li>基礎智能體</li>
+                                    <li>有限任務執行</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <div class="card-header">
+                        <h3>工具集成</h3>
+                        <div class="winner-badge">Augment 領先</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="product-comparison">
+                            <div class="product-item winner">
+                                <h4><i class="fas fa-code"></i> Augment Code</h4>
+                                <ul>
+                                    <li>100+ MCP工具</li>
+                                    <li>終端完整集成</li>
+                                    <li>自定義工具支持</li>
+                                    <li>API豐富生態</li>
+                                </ul>
+                            </div>
+                            <div class="product-item">
+                                <h4><i class="fab fa-github"></i> GitHub Copilot</h4>
+                                <ul>
+                                    <li>GitHub集成</li>
+                                    <li>有限第三方工具</li>
+                                </ul>
+                            </div>
+                            <div class="product-item">
+                                <h4><i class="fas fa-mouse-pointer"></i> Cursor</h4>
+                                <ul>
+                                    <li>基礎工具集成</li>
+                                    <li>有限終端支持</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 為什麼選擇Augment -->
+    <section class="why-augment">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">為什麼選擇 Augment Code？</h2>
+                <p class="section-subtitle">我們的獨特優勢</p>
+            </div>
+
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>技術領先</h3>
+                    <p>SWE-Bench基準測試排名第一，證明了我們在代碼生成質量方面的技術優勢。</p>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>創新功能</h3>
+                    <p>獨有的自主智能體和MCP集成，提供其他工具無法比擬的開發體驗。</p>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h3>價格優勢</h3>
+                    <p>從免費開始，提供最具競爭力的價格，讓更多開發者享受AI編程的便利。</p>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>企業級安全</h3>
+                    <p>SOC 2 Type II認證，確保您的代碼和數據始終安全私密。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-code"></i>
+                        <span>Augment Code</span>
+                    </div>
+                    <p class="footer-description">
+                        業界領先的AI軟件開發平台，讓每一次按鍵都更有價值。
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">頁面導航</h4>
+                    <ul class="footer-links">
+                        <li><a href="home.html">首頁</a></li>
+                        <li><a href="features.html">功能特色</a></li>
+                        <li><a href="pricing.html">價格方案</a></li>
+                        <li><a href="comparison.html">產品對比</a></li>
+                        <li><a href="testimonials.html">用戶評價</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">資源</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">文檔</a></li>
+                        <li><a href="#">博客</a></li>
+                        <li><a href="#">更新日誌</a></li>
+                        <li><a href="#">狀態頁面</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">公司</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">職業機會</a></li>
+                        <li><a href="#">聯繫銷售</a></li>
+                        <li><a href="#">聯繫支持</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Augment Code. 保留所有權利。</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
