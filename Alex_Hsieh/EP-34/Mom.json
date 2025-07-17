@@ -1,0 +1,211 @@
+{
+    "name": "🏠 AI爸媽每日碎碎念工作流",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "hours"
+                        }
+                    ]
+                }
+            },
+            "id": "schedule-trigger",
+            "name": "每日早上8點觸發",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "position": [
+                200,
+                300
+            ],
+            "typeVersion": 1.2
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "1",
+                            "name": "today",
+                            "type": "string",
+                            "value": "={{ $now.format('yyyy年MM月dd日') }}"
+                        },
+                        {
+                            "id": "2",
+                            "name": "dayOfWeek",
+                            "type": "string",
+                            "value": "={{ $now.format('EEEE', 'zh-TW') }}"
+                        },
+                        {
+                            "id": "3",
+                            "name": "timeOfDay",
+                            "type": "string",
+                            "value": "早上"
+                        },
+                        {
+                            "id": "4",
+                            "name": "userPrompt",
+                            "type": "string",
+                            "value": "請給我一段溫馨的碎碎念，提醒我注意生活上的小細節，讓我感受到爸媽的關愛。今天的日期和星期資訊會在前面的節點提供。"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "prepare-context",
+            "name": "準備每日情境",
+            "type": "n8n-nodes-base.set",
+            "position": [
+                420,
+                300
+            ],
+            "typeVersion": 3.4
+        },
+        {
+            "parameters": {
+                "resource": "chat",
+                "prompt": {
+                    "messages": [
+                        {
+                            "role": "system",
+                            "content": "你是一位愛碎碎念但關心孩子的台灣爸媽，會用幽默又溫馨的方式提醒生活細節。你的碎碎念要有以下特色：1.用台灣爸媽的語調，親切又有點囉嗦 2.關心健康、飲食、工作、睡眠等生活面向 3.偶爾加入一些長輩的智慧或人生道理 4.語氣要溫暖但有點念念叨叨 5.適時加入台灣特有的用詞和表達方式 6.內容要實用又有愛 7.長度約100-200字。"
+                        },
+                        {
+                            "content": "={{ $json.userPrompt }}"
+                        }
+                    ]
+                },
+                "options": {},
+                "requestOptions": {}
+            },
+            "id": "ai-parents-chat",
+            "name": "AI爸媽產生碎碎念",
+            "type": "n8n-nodes-base.openAi",
+            "position": [
+                640,
+                300
+            ],
+            "typeVersion": 1.1,
+            "retryOnFail": false,
+            "credentials": {
+                "openAiApi": {
+                    "id": "vo1Kz0pllXw8z5Cv",
+                    "name": "OpenAi account"
+                }
+            },
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "1",
+                            "name": "emailSubject",
+                            "type": "string",
+                            "value": "=🏠 {{ $('準備每日情境').first().json.today }} 爸媽的每日碎碎念"
+                        },
+                        {
+                            "id": "2",
+                            "name": "=emailText",
+                            "type": "string",
+                            "value": "=\n{{ $json.message.content }}\n💝 全國電子，就甘心 💝\n\n這是來自 AI 爸媽的自動關懷 🤖❤️"
+                        }
+                    ]
+                },
+                "includeOtherFields": true,
+                "options": {}
+            },
+            "id": "prepare-email",
+            "name": "準備郵件內容",
+            "type": "n8n-nodes-base.set",
+            "position": [
+                860,
+                300
+            ],
+            "typeVersion": 3.4
+        },
+        {
+            "parameters": {
+                "sendTo": "ai.brain.alex@gmail.com",
+                "subject": "={{ $json.emailSubject }}",
+                "message": "={{ $json.emailText }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                1080,
+                300
+            ],
+            "id": "0f938342-d7cd-471c-96ae-3bd829602a20",
+            "name": "Send a message",
+            "webhookId": "f79e2738-17c2-4038-9d43-76d12343b558",
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "fSU6k20zmD8zlujz",
+                    "name": "Gmail account - cloudf1"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "準備每日情境": {
+            "main": [
+                [
+                    {
+                        "node": "AI爸媽產生碎碎念",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "每日早上8點觸發": {
+            "main": [
+                [
+                    {
+                        "node": "準備每日情境",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "AI爸媽產生碎碎念": {
+            "main": [
+                [
+                    {
+                        "node": "準備郵件內容",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "準備郵件內容": {
+            "main": [
+                [
+                    {
+                        "node": "Send a message",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": false,
+    "settings": {
+        "executionOrder": "v1",
+        "saveManualExecutions": false
+    },
+    "versionId": "c1223142-ec94-4ba8-b577-d63cf21a3ff4",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "98fc6998a4fc974191a50fd1e28f3c93149311bffb0a029723a4889a4111c908"
+    },
+    "id": "idRBt7m7sBYGjMhC",
+    "tags": []
+}

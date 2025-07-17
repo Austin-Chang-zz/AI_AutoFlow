@@ -1,0 +1,185 @@
+{
+  "server": {
+    "name": "n8n-mcp",
+    "description": "A Model Context Protocol server for n8n workflow automation",
+    "version": "2.7.15",
+    "repository": "https://github.com/czlonkowski/n8n-mcp",
+    "installation": {
+      "method": "npx",
+      "command": "npx n8n-mcp",
+      "requirements": ["Node.js"]
+    },
+    "configuration": {
+      "basic": {
+        "command": "npx",
+        "args": ["n8n-mcp"],
+        "env": {
+          "MCP_MODE": "stdio",
+          "LOG_LEVEL": "error",
+          "DISABLE_CONSOLE_OUTPUT": "true"
+        }
+      },
+      "with_n8n_api": {
+        "command": "npx",
+        "args": ["n8n-mcp"],
+        "env": {
+          "MCP_MODE": "stdio",
+          "LOG_LEVEL": "error",
+          "DISABLE_CONSOLE_OUTPUT": "true",
+          "N8N_API_URL": "http://localhost:5678",
+          "N8N_API_KEY": "your-api-key"
+        }
+      }
+    },
+    "tools": [
+      {
+        "name": "tools_documentation",
+        "description": "Get documentation for any MCP tool (START HERE!)"
+      },
+      {
+        "name": "list_nodes",
+        "description": "List all n8n nodes with filtering options"
+      },
+      {
+        "name": "get_node_info",
+        "description": "Get comprehensive information about a specific node"
+      },
+      {
+        "name": "get_node_essentials",
+        "description": "Get only essential properties with examples (10-20 properties instead of 200+)"
+      },
+      {
+        "name": "search_nodes",
+        "description": "Full-text search across all node documentation"
+      },
+      {
+        "name": "search_node_properties",
+        "description": "Find specific properties within nodes"
+      },
+      {
+        "name": "list_ai_tools",
+        "description": "List all AI-capable nodes"
+      },
+      {
+        "name": "get_node_as_tool_info",
+        "description": "Get guidance on using any node as an AI tool"
+      },
+      {
+        "name": "get_node_for_task",
+        "description": "Pre-configured node settings for common tasks"
+      },
+      {
+        "name": "list_tasks",
+        "description": "Discover available task templates"
+      },
+      {
+        "name": "validate_node_operation",
+        "description": "Validate node configurations (operation-aware, profiles support)"
+      },
+      {
+        "name": "validate_node_minimal",
+        "description": "Quick validation for just required fields"
+      },
+      {
+        "name": "validate_workflow",
+        "description": "Complete workflow validation including AI tool connections"
+      },
+      {
+        "name": "validate_workflow_connections",
+        "description": "Check workflow structure and AI tool connections"
+      },
+      {
+        "name": "validate_workflow_expressions",
+        "description": "Validate n8n expressions including $fromAI()"
+      },
+      {
+        "name": "get_property_dependencies",
+        "description": "Analyze property visibility conditions"
+      },
+      {
+        "name": "get_node_documentation",
+        "description": "Get parsed documentation from n8n-docs"
+      },
+      {
+        "name": "get_database_statistics",
+        "description": "View database metrics and coverage"
+      },
+      {
+        "name": "n8n_create_workflow",
+        "description": "Create new workflows with nodes and connections"
+      },
+      {
+        "name": "n8n_get_workflow",
+        "description": "Get complete workflow by ID"
+      },
+      {
+        "name": "n8n_get_workflow_details",
+        "description": "Get workflow with execution statistics"
+      },
+      {
+        "name": "n8n_get_workflow_structure",
+        "description": "Get simplified workflow structure"
+      },
+      {
+        "name": "n8n_get_workflow_minimal",
+        "description": "Get minimal workflow info (ID, name, active status)"
+      },
+      {
+        "name": "n8n_update_full_workflow",
+        "description": "Update entire workflow (complete replacement)"
+      },
+      {
+        "name": "n8n_update_partial_workflow",
+        "description": "Update workflow using diff operations"
+      },
+      {
+        "name": "n8n_delete_workflow",
+        "description": "Delete workflows permanently"
+      },
+      {
+        "name": "n8n_list_workflows",
+        "description": "List workflows with filtering and pagination"
+      },
+      {
+        "name": "n8n_validate_workflow",
+        "description": "Validate workflows already in n8n by ID"
+      },
+      {
+        "name": "n8n_trigger_webhook_workflow",
+        "description": "Trigger workflows via webhook URL"
+      },
+      {
+        "name": "n8n_get_execution",
+        "description": "Get execution details by ID"
+      },
+      {
+        "name": "n8n_list_executions",
+        "description": "List executions with status filtering"
+      },
+      {
+        "name": "n8n_delete_execution",
+        "description": "Delete execution records"
+      },
+      {
+        "name": "n8n_health_check",
+        "description": "Check n8n API connectivity and features"
+      },
+      {
+        "name": "n8n_diagnostic",
+        "description": "Troubleshoot management tools visibility and configuration issues"
+      },
+      {
+        "name": "n8n_list_available_tools",
+        "description": "List all available management tools"
+      }
+    ],
+    "features": {
+      "node_coverage": "528/528 nodes (100%)",
+      "properties_coverage": "520 nodes with properties (98.5%)",
+      "documentation_coverage": "470 nodes with documentation (90%)",
+      "ai_tools": "263 AI-capable tools detected",
+      "average_response_time": "~12ms",
+      "database_size": "~15MB"
+    }
+  }
+}

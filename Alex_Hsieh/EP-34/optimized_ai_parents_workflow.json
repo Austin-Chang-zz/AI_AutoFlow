@@ -1,0 +1,311 @@
+{
+  "name": "🏠 AI爸媽每日碎碎念工作流 (MCP優化版)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        },
+        "timezone": "Asia/Taipei"
+      },
+      "id": "schedule-trigger",
+      "name": "每日早上8點觸發",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [200, 300],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "today",
+              "type": "string",
+              "value": "={{ $now.format('yyyy年MM月dd日') }}"
+            },
+            {
+              "id": "2",
+              "name": "dayOfWeek",
+              "type": "string",
+              "value": "={{ $now.format('EEEE', 'zh-TW') }}"
+            },
+            {
+              "id": "3",
+              "name": "timeOfDay",
+              "type": "string",
+              "value": "早上"
+            },
+            {
+              "id": "4",
+              "name": "weather",
+              "type": "string",
+              "value": "={{ $now.month() >= 3 && $now.month() <= 5 ? '春天' : $now.month() >= 6 && $now.month() <= 8 ? '夏天' : $now.month() >= 9 && $now.month() <= 11 ? '秋天' : '冬天' }}"
+            },
+            {
+              "id": "5",
+              "name": "userPrompt",
+              "type": "string",
+              "value": "請給我一段溫馨的碎碎念，提醒我注意生活上的小細節，讓我感受到爸媽的關愛。今天是{{ $json.today }}，{{ $json.dayOfWeek }}，{{ $json.weather }}季節。請根據季節和星期給出適合的建議。"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-context",
+      "name": "準備每日情境",
+      "type": "n8n-nodes-base.set",
+      "position": [420, 300],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-3.5-turbo",
+        "prompt": {
+          "messages": [
+            {
+              "role": "system",
+              "content": "你是一位愛碎碎念但關心孩子的台灣爸媽，會用幽默又溫馨的方式提醒生活細節。你的碎碎念要有以下特色：\n1. 用台灣爸媽的語調，親切又有點囉嗦\n2. 關心健康、飲食、工作、睡眠等生活面向\n3. 偶爾加入一些長輩的智慧或人生道理\n4. 語氣要溫暖但有點念念叨叨\n5. 適時加入台灣特有的用詞和表達方式\n6. 根據季節和星期給出相應的關懷建議\n7. 內容要實用又有愛，長度約150-250字\n8. 可以提到一些台灣的生活習慣或食物"
+            },
+            {
+              "role": "user",
+              "content": "={{ $json.userPrompt }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 300
+        },
+        "requestOptions": {}
+      },
+      "id": "ai-parents-chat",
+      "name": "AI爸媽產生碎碎念",
+      "type": "n8n-nodes-base.openAi",
+      "position": [640, 300],
+      "typeVersion": 1.1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credentials",
+          "name": "OpenAI API"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-ai-success",
+      "name": "檢查AI回應是否成功",
+      "type": "n8n-nodes-base.if",
+      "position": [860, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "emailSubject",
+              "type": "string",
+              "value": "=🏠 {{ $('準備每日情境').first().json.today }} {{ $('準備每日情境').first().json.dayOfWeek }} - 爸媽的每日碎碎念"
+            },
+            {
+              "id": "2",
+              "name": "emailText",
+              "type": "string",
+              "value": "=親愛的寶貝：\n\n{{ $json.message.content }}\n\n💝 記得要照顧好自己喔！💝\n\n這是來自 AI 爸媽的自動關懷 🤖❤️\n\n---\n發送時間：{{ $now.format('yyyy-MM-dd HH:mm:ss') }}\n季節提醒：{{ $('準備每日情境').first().json.weather }}季要注意保暖/防曬喔！"
+            },
+            {
+              "id": "3",
+              "name": "backupMessage",
+              "type": "string",
+              "value": "今天是{{ $('準備每日情境').first().json.today }}，{{ $('準備每日情境').first().json.dayOfWeek }}。記得要好好照顧自己，按時吃飯、多喝水、早點睡覺。爸媽永遠愛你！💕"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "prepare-email",
+      "name": "準備郵件內容",
+      "type": "n8n-nodes-base.set",
+      "position": [1080, 200],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "emailSubject",
+              "type": "string",
+              "value": "=🏠 {{ $('準備每日情境').first().json.today }} - 爸媽的每日關懷 (備用訊息)"
+            },
+            {
+              "id": "2",
+              "name": "emailText",
+              "type": "string",
+              "value": "=親愛的寶貝：\n\n今天是{{ $('準備每日情境').first().json.today }}，{{ $('準備每日情境').first().json.dayOfWeek }}。\n\n雖然AI爸媽今天有點累，沒辦法給你客製化的碎碎念，但是爸媽的愛永遠不會少！\n\n記得要：\n• 按時吃三餐，不要只吃泡麵\n• 多喝溫開水，少喝冷飲\n• 早點睡覺，不要熬夜\n• 出門記得帶傘，{{ $('準備每日情境').first().json.weather }}季天氣變化大\n• 工作再忙也要照顧身體\n\n💝 爸媽永遠愛你！💝\n\n---\n發送時間：{{ $now.format('yyyy-MM-dd HH:mm:ss') }}\n這是來自 AI 爸媽的備用關懷訊息 🤖❤️"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "prepare-backup-email",
+      "name": "準備備用郵件內容",
+      "type": "n8n-nodes-base.set",
+      "position": [1080, 400],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@gmail.com",
+        "subject": "={{ $json.emailSubject }}",
+        "message": "={{ $json.emailText }}",
+        "options": {
+          "ccList": "",
+          "bccList": "",
+          "replyTo": ""
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1300, 300],
+      "id": "send-email",
+      "name": "發送每日關懷郵件",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gmail-credentials",
+          "name": "Gmail OAuth2"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "每日早上8點觸發": {
+      "main": [
+        [
+          {
+            "node": "準備每日情境",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "準備每日情境": {
+      "main": [
+        [
+          {
+            "node": "AI爸媽產生碎碎念",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI爸媽產生碎碎念": {
+      "main": [
+        [
+          {
+            "node": "檢查AI回應是否成功",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "檢查AI回應是否成功": {
+      "main": [
+        [
+          {
+            "node": "準備郵件內容",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "準備備用郵件內容",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "準備郵件內容": {
+      "main": [
+        [
+          {
+            "node": "發送每日關懷郵件",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "準備備用郵件內容": {
+      "main": [
+        [
+          {
+            "node": "發送每日關懷郵件",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "",
+    "timezone": "Asia/Taipei"
+  },
+  "versionId": "mcp-optimized-v1.0.0",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "mcp-optimized-instance"
+  },
+  "id": "ai-parents-mcp-optimized",
+  "tags": ["AI", "Email", "Daily", "MCP", "Parents"],
+  "description": "MCP優化版的AI爸媽每日碎碎念工作流，包含錯誤處理和備用訊息機制"
+}

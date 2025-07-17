@@ -1,0 +1,20 @@
+{
+  "projects": {
+    "demo_website": {
+      "type": "website",
+      "path": "Projects\\demo_website",
+      "current_version": "v1.0.0"
+    },
+    "demo_n8n": {
+      "type": "n8n",
+      "path": "Projects\\demo_n8n",
+      "current_version": "v1.0.0"
+    },
+    "demo_novel": {
+      "type": "novel",
+      "path": "Projects\\demo_novel",
+      "current_version": "v1.0.0"
+    }
+  },
+  "current_project": null
+}
