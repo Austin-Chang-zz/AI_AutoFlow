@@ -199,6 +199,9 @@ We recommend that the Augment Code team include this feature in their near-term 
 ---
 
 **Submitted by**: AI_AutoFlow User
-**Submission Date**: 2025-01-13
+**Submission Date**: 2025-07-17
 **Priority**: High
 **Type**: Feature Request
+**Status**: closed by augment code team
+**Reason**: For questions on our product, not this open-source repository, please use our Discord: https://discord.gg/NKpvMCKP.
+
