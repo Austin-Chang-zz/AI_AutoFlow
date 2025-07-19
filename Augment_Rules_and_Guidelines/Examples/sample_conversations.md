@@ -229,15 +229,15 @@ def monthly_sales_trend(df):
 - 預算有限
 
 請推薦技術棧和架構設計。
-```
 
 ### **AI回應**
-```markdown
+
 ## 電商平台架構設計建議
 
 ### 技術棧推薦
 
 #### 後端服務
+---
 - **API服務**: Node.js + Express 或 Python + FastAPI
 - **數據庫**: PostgreSQL (主) + Redis (緩存)
 - **消息隊列**: Redis + Bull Queue
@@ -281,10 +281,9 @@ def monthly_sales_trend(df):
 - 想開發一個個人博客
 
 請為我制定學習計劃。
-```
 
 ### **AI回應**
-```markdown
+
 ## Python Web開發學習路線
 
 ### 階段1：Web基礎知識 (1-2週)
@@ -330,7 +329,6 @@ if __name__ == '__main__':
 
 ### 項目里程碑
 [階段性項目目標...]
-```
 
 ## 💡 **從這些示例中學到什麼**
 
